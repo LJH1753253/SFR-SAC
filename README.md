@@ -10,10 +10,7 @@ name for that policy is **SFR-SAC**. The implementation uses a split service-
 flow actor, structured reward/cost critics, hybrid continuous--categorical
 actions, and straight-through AP execution.
 
-The method regulates aggregate service-failure cost. The critics in this
-release predict immediate slot outcomes (`gamma=0`); the code and results do
-not claim a long-horizon CMDP safety guarantee or per-device reliability
-guarantee.
+The controller uses the immediate slot service-failure cost with `gamma=0`.
 
 ## Quick Start
 
@@ -87,7 +84,7 @@ The final five-pair results are included under `results/final/`:
 - `data/evidence5_summary.csv`: means and sample standard deviations;
 - `data/paired_comparisons.csv`: paired deltas and nominal intervals;
 - `data/comparison_locked.json`: validation-only primary-policy selection;
-- `data/evidence5_REPORT.md`: complete report and limitations.
+- `data/evidence5_REPORT.md`: complete experiment report.
 
 Energy is reported as mJ/device/slot. Cost, BFSR, and failure components are
 reported as percentages. The shipped figures use the terminology
@@ -107,14 +104,3 @@ results/final/      final PDFs, CSV summaries, and report
 tests/              smoke and protocol tests
 ```
 
-## Scientific Scope
-
-SFR-SAC is evaluated as an aggregate service-failure regulating policy. The
-results show an energy--failure operating point rather than universal metric
-dominance. The Lyapunov implementation is a Lyapunov-inspired heuristic, and
-the model-based greedy baseline uses simulator information unavailable to the
-neural actor. These distinctions are preserved in the result report.
-
-No software license is asserted in this repository yet. Add the license
-approved by the authors before treating the repository as a general-purpose
-open-source package.
