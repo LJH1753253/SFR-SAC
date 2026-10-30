@@ -1,0 +1,471 @@
+{
+  "addon_digest": "fc298c24ffdd4f1d86888a10551cdcaf43338e29ab05ecf97d14b108d9fe8d43",
+  "source_digest": "e942cebacf7dd4896d0a5b5647a47fb9c8246d7982c2fe21d72ba58b2f01d7d3",
+  "locked_unix": 1793047356.6302214,
+  "validation_target_cost_percent": 9.38649138963211,
+  "matched_penalty_beta": null,
+  "tolerance_pp": 0.25,
+  "arms": [
+    {
+      "beta": 2.5,
+      "cost_percent": 11.787040323825398,
+      "energy_mJ_device_slot": 8.748792643180016,
+      "completed_pairs": 5,
+      "gap_pp": 2.4005489341932886
+    },
+    {
+      "beta": 2.75,
+      "cost_percent": 10.056157916757487,
+      "energy_mJ_device_slot": 9.32832187236873,
+      "completed_pairs": 5,
+      "gap_pp": 0.6696665271253774
+    },
+    {
+      "beta": 3.0,
+      "cost_percent": 8.735000511976247,
+      "energy_mJ_device_slot": 10.01188910613597,
+      "completed_pairs": 5,
+      "gap_pp": 0.6514908776558617
+    },
+    {
+      "beta": 3.25,
+      "cost_percent": 7.487739182308779,
+      "energy_mJ_device_slot": 10.477261601634911,
+      "completed_pairs": 5,
+      "gap_pp": 1.89875220732333
+    },
+    {
+      "beta": 4.0,
+      "cost_percent": 5.861131063886266,
+      "energy_mJ_device_slot": 11.39727584015267,
+      "completed_pairs": 5,
+      "gap_pp": 3.525360325745843
+    },
+    {
+      "beta": 5.0,
+      "cost_percent": 4.978305946842333,
+      "energy_mJ_device_slot": 12.050032327404065,
+      "completed_pairs": 5,
+      "gap_pp": 4.408185442789776
+    }
+  ],
+  "rules": [
+    {
+      "variant": "constant",
+      "seed": 0,
+      "mode": "budget",
+      "target_cost_percent": 9.345584014785771,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.12
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.855185586098271,
+      "validation_energy": 11.739119837544473,
+      "validation_feasible": true
+    },
+    {
+      "variant": "constant",
+      "seed": 0,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.345584014785771,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.48,
+            "p": 0.2
+          },
+          "probability": 0.2096306529511613
+        },
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.16
+          },
+          "probability": 0.7903693470488387
+        }
+      ],
+      "validation_cost_percent": 9.345584014785771,
+      "validation_energy": 11.875453959131963,
+      "validation_match": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 0,
+      "mode": "budget",
+      "target_cost_percent": 9.345584014785771,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.36308696499473,
+      "validation_energy": 9.772539928528364,
+      "validation_feasible": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 0,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.345584014785771,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.1
+          },
+          "probability": 0.008464095582080614
+        },
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 0.9915359044179194
+        }
+      ],
+      "validation_cost_percent": 9.345584014785771,
+      "validation_energy": 9.77562386851852,
+      "validation_match": true
+    },
+    {
+      "variant": "constant",
+      "seed": 1,
+      "mode": "budget",
+      "target_cost_percent": 9.515019362287035,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.12
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.550662814776846,
+      "validation_energy": 12.356388694632383,
+      "validation_feasible": true
+    },
+    {
+      "variant": "constant",
+      "seed": 1,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.515019362287035,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.16
+          },
+          "probability": 0.9284415321372469
+        },
+        {
+          "knob": {
+            "x": 0.52,
+            "p": 0.12
+          },
+          "probability": 0.0715584678627531
+        }
+      ],
+      "validation_cost_percent": 9.515019362287035,
+      "validation_energy": 12.357961865560032,
+      "validation_match": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 1,
+      "mode": "budget",
+      "target_cost_percent": 9.515019362287035,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 8.984363960527087,
+      "validation_energy": 10.146799095302375,
+      "validation_feasible": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 1,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.515019362287035,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 0.7439856585541209
+        },
+        {
+          "knob": {
+            "slack": 1.2
+          },
+          "probability": 0.2560143414458791
+        }
+      ],
+      "validation_cost_percent": 9.515019362287035,
+      "validation_energy": 10.056830592210469,
+      "validation_match": true
+    },
+    {
+      "variant": "constant",
+      "seed": 2,
+      "mode": "budget",
+      "target_cost_percent": 9.417968135797487,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.16
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.937203816330895,
+      "validation_energy": 10.504252358147669,
+      "validation_feasible": true
+    },
+    {
+      "variant": "constant",
+      "seed": 2,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.417968135797487,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.48,
+            "p": 0.2
+          },
+          "probability": 0.2260553036753267
+        },
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.2
+          },
+          "probability": 0.7739446963246733
+        }
+      ],
+      "validation_cost_percent": 9.417968135797487,
+      "validation_energy": 10.628483769692334,
+      "validation_match": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 2,
+      "mode": "budget",
+      "target_cost_percent": 9.417968135797487,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.970343438879103,
+      "validation_energy": 9.124815969239078,
+      "validation_feasible": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 2,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.417968135797487,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.1
+          },
+          "probability": 0.2644655111323604
+        },
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 0.7355344888676396
+        }
+      ],
+      "validation_cost_percent": 9.417968135797487,
+      "validation_energy": 9.20738487365628,
+      "validation_match": true
+    },
+    {
+      "variant": "constant",
+      "seed": 3,
+      "mode": "budget",
+      "target_cost_percent": 9.125622856859627,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.12
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.670278921121215,
+      "validation_energy": 11.91444594770778,
+      "validation_feasible": true
+    },
+    {
+      "variant": "constant",
+      "seed": 3,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.125622856859627,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.48,
+            "p": 0.16
+          },
+          "probability": 0.3203295084020928
+        },
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.12
+          },
+          "probability": 0.6796704915979073
+        }
+      ],
+      "validation_cost_percent": 9.125622856859627,
+      "validation_energy": 12.068710764649413,
+      "validation_match": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 3,
+      "mode": "budget",
+      "target_cost_percent": 9.125622856859627,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 8.982504446143887,
+      "validation_energy": 9.868860374546498,
+      "validation_feasible": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 3,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.125622856859627,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 0.9309552380308511
+        },
+        {
+          "knob": {
+            "slack": 1.2
+          },
+          "probability": 0.06904476196914888
+        }
+      ],
+      "validation_cost_percent": 9.125622856859627,
+      "validation_energy": 9.842422804850575,
+      "validation_match": true
+    },
+    {
+      "variant": "constant",
+      "seed": 4,
+      "mode": "budget",
+      "target_cost_percent": 9.528262578430631,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.2
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.894338897449915,
+      "validation_energy": 12.153295409904153,
+      "validation_feasible": true
+    },
+    {
+      "variant": "constant",
+      "seed": 4,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.528262578430631,
+      "parts": [
+        {
+          "knob": {
+            "x": 0.48,
+            "p": 0.2
+          },
+          "probability": 0.29952159090366287
+        },
+        {
+          "knob": {
+            "x": 0.5,
+            "p": 0.16
+          },
+          "probability": 0.7004784090963372
+        }
+      ],
+      "validation_cost_percent": 9.528262578430631,
+      "validation_energy": 12.260170556147733,
+      "validation_match": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 4,
+      "mode": "budget",
+      "target_cost_percent": 9.528262578430631,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 1.0
+        }
+      ],
+      "validation_cost_percent": 9.598023485592224,
+      "validation_energy": 10.24564875051559,
+      "validation_feasible": true
+    },
+    {
+      "variant": "mb_greedy",
+      "seed": 4,
+      "mode": "matched_mixture",
+      "target_cost_percent": 9.528262578430631,
+      "parts": [
+        {
+          "knob": {
+            "slack": 1.1
+          },
+          "probability": 0.03382425815601279
+        },
+        {
+          "knob": {
+            "slack": 1.15
+          },
+          "probability": 0.9661757418439872
+        }
+      ],
+      "validation_cost_percent": 9.528262578430631,
+      "validation_energy": 10.257665253659955,
+      "validation_match": true
+    }
+  ],
+  "selection_split": "validation_only",
+  "primary": "split_exact"
+}
