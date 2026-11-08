@@ -1,0 +1,215 @@
+{
+  "paired_results": [
+    {
+      "seed": 0,
+      "layout_seed": 1000,
+      "old_cost_percent": 9.325229114129922,
+      "new_cost_percent": 9.435773934437218,
+      "old_energy_mJ_device_slot": 8.189706157206897,
+      "new_energy_mJ_device_slot": 13.604043601296553,
+      "old_bfsr_percent": 96.39,
+      "new_bfsr_percent": 65.8,
+      "delta_cost_percent": 0.11054482030729673,
+      "delta_energy_mJ_device_slot": 5.4143374440896554,
+      "delta_bfsr_percent": -30.590000000000003,
+      "old_snr_db": 16.394106402487157,
+      "new_snr_db": 5.598920053452884,
+      "old_avg_offload": 0.4748700679827366,
+      "new_avg_offload": 0.27192618185109885,
+      "old_ap_load_cv": 0.46678965816997714,
+      "new_ap_load_cv": 1.592551097927289
+    },
+    {
+      "seed": 1,
+      "layout_seed": 1001,
+      "old_cost_percent": 9.514444867005423,
+      "new_cost_percent": 9.56010021654743,
+      "old_energy_mJ_device_slot": 8.789280322922506,
+      "new_energy_mJ_device_slot": 8.781368220390117,
+      "old_bfsr_percent": 93.84,
+      "new_bfsr_percent": 91.335,
+      "delta_cost_percent": 0.04565534954200601,
+      "delta_energy_mJ_device_slot": -0.007912102532388943,
+      "delta_bfsr_percent": -2.5050000000000097,
+      "old_snr_db": 17.85611246148576,
+      "new_snr_db": 18.249287090007172,
+      "old_avg_offload": 0.48833558567700036,
+      "new_avg_offload": 0.4892708721128934,
+      "old_ap_load_cv": 0.19737563956088397,
+      "new_ap_load_cv": 0.16339284754033284
+    },
+    {
+      "seed": 2,
+      "layout_seed": 1002,
+      "old_cost_percent": 9.418831673216175,
+      "new_cost_percent": 9.354058267999493,
+      "old_energy_mJ_device_slot": 8.257895040188624,
+      "new_energy_mJ_device_slot": 8.241351441801473,
+      "old_bfsr_percent": 97.11,
+      "new_bfsr_percent": 97.805,
+      "delta_cost_percent": -0.06477340521668218,
+      "delta_energy_mJ_device_slot": -0.016543598387150027,
+      "delta_bfsr_percent": 0.6950000000000074,
+      "old_snr_db": 18.69602654869188,
+      "new_snr_db": 18.60888439995942,
+      "old_avg_offload": 0.49183968759050034,
+      "new_avg_offload": 0.49027161718571627,
+      "old_ap_load_cv": 0.20869703807615725,
+      "new_ap_load_cv": 0.19672352013825564
+    },
+    {
+      "seed": 3,
+      "layout_seed": 1003,
+      "old_cost_percent": 9.128386851493248,
+      "new_cost_percent": 9.217011129978749,
+      "old_energy_mJ_device_slot": 8.720030031627575,
+      "new_energy_mJ_device_slot": 8.70746413872847,
+      "old_bfsr_percent": 99.535,
+      "new_bfsr_percent": 99.555,
+      "delta_cost_percent": 0.0886242784855007,
+      "delta_energy_mJ_device_slot": -0.01256589289910437,
+      "delta_bfsr_percent": 0.020000000000010232,
+      "old_snr_db": 20.236269547514908,
+      "new_snr_db": 20.26043888237375,
+      "old_avg_offload": 0.4845570344388198,
+      "new_avg_offload": 0.48631818900007623,
+      "old_ap_load_cv": 0.1052872515476774,
+      "new_ap_load_cv": 0.10580093554421173
+    },
+    {
+      "seed": 4,
+      "layout_seed": 1004,
+      "old_cost_percent": 9.516296343456283,
+      "new_cost_percent": 9.356923548882278,
+      "old_energy_mJ_device_slot": 9.014560814581747,
+      "new_energy_mJ_device_slot": 9.053964993989718,
+      "old_bfsr_percent": 94.27,
+      "new_bfsr_percent": 96.69,
+      "delta_cost_percent": -0.15937279457400422,
+      "delta_energy_mJ_device_slot": 0.039404179407970474,
+      "delta_bfsr_percent": 2.4200000000000017,
+      "old_snr_db": 18.3905765140753,
+      "new_snr_db": 18.382507874115262,
+      "old_avg_offload": 0.4884311360081014,
+      "new_avg_offload": 0.48567921836304656,
+      "old_ap_load_cv": 0.1437850029419863,
+      "new_ap_load_cv": 0.14389762903800885
+    }
+  ],
+  "config_and_hardware": {
+    "configs_equal_after_revision_variant_removal": false,
+    "config_differences": [
+      {
+        "path": "config.environment.mec_sharing",
+        "old": null,
+        "new": "proportional"
+      }
+    ],
+    "old_config_hash": "3efb5379d8a8e913",
+    "new_config_hash": "24b8bc3f4b1adf2f",
+    "old_source_digest": "e942cebacf7dd4896d0a5b5647a47fb9c8246d7982c2fe21d72ba58b2f01d7d3",
+    "new_source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "old_hardware": {
+      "python": "/public/home/hnust19209626205/iotj_cloud24_20261018/.venv/bin/python",
+      "torch": "2.5.1+cu121",
+      "cuda": "12.1",
+      "gpus": [
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB"
+      ],
+      "cpu_count": 64
+    },
+    "new_hardware": {
+      "torch": "2.5.1+cu121",
+      "cuda": "12.1",
+      "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+      "visible_devices": "0",
+      "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+      "train_seed": 0,
+      "layout_seed": 1000
+    },
+    "old_training_episodes": 1600,
+    "new_training_episodes": 1600,
+    "old_eval_stream": 2907000,
+    "new_eval_stream": 2907000
+  },
+  "ap_independent_seed0": {
+    "variant": "sfr_apind",
+    "seed": 0,
+    "episodes": 5,
+    "steps_requested": 200,
+    "slots_observed": 1000,
+    "selected_ap_counts_all_devices": {
+      "0": 35000,
+      "1": 35000
+    },
+    "active_ap_counts": {
+      "0": 35000,
+      "1": 35000,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "mean_active_ap_load_cv": 2.2360679774997902,
+    "max_active_ap_load_cv": 2.2360679774997902,
+    "mean_cost_percent": 40.17335397263745,
+    "tie_heavy_slot_fraction": 0.005
+  },
+  "ap_dependent_seed0": {
+    "variant": "sfr",
+    "seed": 0,
+    "episodes": 5,
+    "steps_requested": 200,
+    "slots_observed": 1000,
+    "selected_ap_counts_all_devices": {
+      "0": 9061,
+      "1": 9557,
+      "2": 8620,
+      "3": 7152,
+      "4": 23178,
+      "5": 12432
+    },
+    "active_ap_counts": {
+      "0": 9061,
+      "1": 9557,
+      "2": 8620,
+      "3": 7152,
+      "4": 23178,
+      "5": 12432
+    },
+    "mean_active_ap_load_cv": 0.47300743877848117,
+    "max_active_ap_load_cv": 0.6779320295831242,
+    "mean_cost_percent": 9.326559568117403,
+    "tie_heavy_slot_fraction": 0.0
+  },
+  "max_gain_seed0": {
+    "variant": "sfr_maxgain",
+    "seed": 0,
+    "episodes": 5,
+    "steps_requested": 200,
+    "slots_observed": 1000,
+    "selected_ap_counts_all_devices": {
+      "0": 12516,
+      "1": 15355,
+      "2": 11703,
+      "3": 12882,
+      "4": 10306,
+      "5": 7238
+    },
+    "active_ap_counts": {
+      "0": 12516,
+      "1": 15355,
+      "2": 11703,
+      "3": 12882,
+      "4": 10306,
+      "5": 7238
+    },
+    "mean_active_ap_load_cv": 0.23599299395387383,
+    "max_active_ap_load_cv": 0.3658928135675914,
+    "mean_cost_percent": 9.649459714838066,
+    "tie_heavy_slot_fraction": 0.0
+  },
+  "source_code_note": "Original source digest e942... is not present in the current checkout; exact source-level equivalence cannot be reconstructed from the results archive alone.",
+  "formal_outputs_modified": false
+}
