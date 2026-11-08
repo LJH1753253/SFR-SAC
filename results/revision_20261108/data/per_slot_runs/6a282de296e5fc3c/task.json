@@ -1,0 +1,20 @@
+{
+  "task": "per_slot",
+  "optimizer": "critic_scratch",
+  "parent": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1000/train0/e6ea37fff928f396",
+  "parent_id": "e6ea37fff928f396",
+  "N": 70,
+  "seed": 0,
+  "layout_seed": 1000,
+  "variant": "per_slot_critic_scratch",
+  "method": "safe",
+  "resource": "cpu",
+  "test_rng_seed": 2907000,
+  "test_episodes": 30,
+  "iters": 150,
+  "warmup_episodes": 10,
+  "warmup_rng_seed": 2957000,
+  "revision_source_digest": "0681f3c0d6721a33ceb6b500e0c5856ba4a30499afdbfecb0f576c197cfd7021",
+  "id": "6a282de296e5fc3c",
+  "directory": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/per_slot/6a282de296e5fc3c"
+}

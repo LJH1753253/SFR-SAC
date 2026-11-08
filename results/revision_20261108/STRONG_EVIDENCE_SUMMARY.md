@@ -79,6 +79,19 @@ At the strict budget setting `d=0.08`, the hinge form is substantially more stab
 
 The hinge penalty provides a much more stable constrained operating point. The complete linear and hinge sweeps are retained in `tables/penalty_form.csv` and `data/REVISION_REPORT.md`.
 
+## 7. Per-Slot Optimization
+
+The recovered per-slot experiment uses the same five paired deployments at `N=70`, with 30 evaluation episodes and 6,000 slots per method/deployment. It compares the trained Actor with two critic-based per-slot refinements and a full-information numerical optimizer.
+
+| Method | Cost (%) | Energy (mJ/device/slot) | BFSR (%) | Median decision (ms) |
+|---|---:|---:|---:|---:|
+| Actor | 9.373 +/- 0.121 | 9.678 +/- 2.198 | 90.437 +/- 13.898 | 1.212 +/- 0.106 |
+| Critic refine | 9.727 +/- 0.150 | 9.191 +/- 1.640 | 84.147 +/- 1.823 | 200.389 +/- 24.595 |
+| Critic scratch | 9.858 +/- 0.028 | 8.531 +/- 0.349 | 74.697 +/- 3.971 | 933.709 +/- 134.725 |
+| Numerical optimizer | 9.998 +/- 0.004 | 7.707 +/- 0.326 | 53.240 +/- 0.870 | 101.935 +/- 9.815 |
+
+The Actor provides the lowest online decision latency by a wide margin. The numerical optimizer obtains the lowest mean energy, but its failure cost is close to the 10% budget and its BFSR is substantially below the Actor. This experiment therefore supports amortized online decision making; it does not establish Actor energy optimality at an equal failure level. The numerical optimizer uses full simulator-model information and is not a proven global optimum. Detailed per-seed values and provenance are in `data/per_slot_per_seed.csv`, `data/per_slot_report.md`, and `data/per_slot_provenance.json`.
+
 ## Main Conclusion
 
 The revision evidence supports the following paper-level conclusion:

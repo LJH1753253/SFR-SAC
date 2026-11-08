@@ -1,0 +1,520 @@
+{
+  "archive_created": "2026-11-09T01:28:14.058251+08:00",
+  "current_git_commit": "138f482db069b288bc8f1b1272be490352df876f",
+  "source_directory": "D:\\PythonCode\\SFR-SAC-revision-overnight\\outputs\\revision_local_overnight",
+  "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+  "revision_source_digest": "0681f3c0d6721a33ceb6b500e0c5856ba4a30499afdbfecb0f576c197cfd7021",
+  "protocol_hash": "fc8a7bdc48652ef2",
+  "protocol": {
+    "version": 1,
+    "revision_source_digest": "0681f3c0d6721a33ceb6b500e0c5856ba4a30499afdbfecb0f576c197cfd7021",
+    "stages": [
+      "fair_critics",
+      "per_slot",
+      "mismatch",
+      "cpo",
+      "horizon",
+      "penalty_form",
+      "ap",
+      "latency"
+    ],
+    "pairs5": [
+      [
+        1000,
+        0
+      ],
+      [
+        1001,
+        1
+      ],
+      [
+        1002,
+        2
+      ],
+      [
+        1003,
+        3
+      ],
+      [
+        1004,
+        4
+      ]
+    ],
+    "pairs3": [
+      [
+        1000,
+        0
+      ],
+      [
+        1001,
+        1
+      ],
+      [
+        1002,
+        2
+      ]
+    ],
+    "test_stream": "2900000 + 100*N + layout_seed - 1000",
+    "test_episodes": 100,
+    "per_slot_episodes": 30,
+    "per_slot_warmup_episodes": 10,
+    "per_slot_iterations": {
+      "critic_refine": 30,
+      "critic_scratch": 150,
+      "oracle": 100
+    },
+    "penalty_betas": [
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.5
+    ],
+    "mismatch": {
+      "mec_capacity": {
+        "environment": {
+          "bs_cpu_base": 64000000000.0
+        },
+        "assumptions": {
+          "bs_cpu_base": 80000000000.0
+        }
+      },
+      "pa_efficiency": {
+        "environment": {
+          "tx_pa_efficiency": 0.25
+        },
+        "assumptions": {
+          "tx_pa_efficiency": 0.35
+        }
+      },
+      "cycles": {
+        "environment": {
+          "cycles_per_bit": 3600.0
+        },
+        "assumptions": {
+          "cycles_per_bit": 3000.0
+        }
+      },
+      "mec_sharing": {
+        "environment": {
+          "mec_sharing": "max_min_fair"
+        },
+        "assumptions": {}
+      }
+    },
+    "latency_sizes": [
+      50,
+      70,
+      200
+    ],
+    "quick": false,
+    "notes": {
+      "fair_critics": "Safe TD3 and a fixed-penalty SAC receive SFR-SAC's structured critics (and, for td3_struct_split, its split actor network), isolating the critic structure from the constrained-RL algorithm.",
+      "per_slot": "Direct per-slot optimization of the trained critics' objective and a full-information oracle; tests whether the actor is needed beyond amortization (latency).",
+      "mismatch": "The true environment differs from the physical constants given to SFR-SAC's structured networks; model-free Safe TD3 and full-information MB-greedy are trained/tuned in the same perturbed environment.",
+      "horizon": "E1: gamma 0 vs 0.99 for learners with generic (MLP) critics; both arms use sampled AP entropy because the exact entropy controls require gamma 0. CPO arms are in stage cpo.",
+      "cpo": "E7: CPO with the split service-flow actor, gamma 0 and gamma 0.99, main grid N and pairs.",
+      "penalty_form": "E2: hinge vs untruncated Lagrangian actor penalty for SFR-SAC at d = 8, 10, 12 %.",
+      "ap": "E3: learned AP vs best-channel AP, and AP-dependent vs AP-independent gains.",
+      "latency": "E6: one CPU thread; initialized networks for N = 50, 70, 200 plus the trained N = 70 actor."
+    }
+  },
+  "historical_suite_status": {
+    "created": "2026-11-06 01:23:09 +0800",
+    "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+    "revision_source_digest": "0681f3c0d6721a33ceb6b500e0c5856ba4a30499afdbfecb0f576c197cfd7021",
+    "protocol_hash": "fc8a7bdc48652ef2",
+    "quick": false,
+    "deadline_unix": 1793958789.2289515,
+    "stage": "per_slot",
+    "completed": 20,
+    "planned": 25,
+    "failed": {
+      "e6ea37fff928f396": {
+        "exit_code": 0,
+        "directory": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1000/train0/e6ea37fff928f396",
+        "variant": "sfr"
+      },
+      "507c74c7d42a61ca": {
+        "exit_code": 0,
+        "directory": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1001/train1/507c74c7d42a61ca",
+        "variant": "sfr"
+      },
+      "0f5e3700891474af": {
+        "exit_code": 0,
+        "directory": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1002/train2/0f5e3700891474af",
+        "variant": "sfr"
+      },
+      "5d60dd5c6e644568": {
+        "exit_code": 0,
+        "directory": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1003/train3/5d60dd5c6e644568",
+        "variant": "sfr"
+      },
+      "b97750603dc2ea03": {
+        "exit_code": 0,
+        "directory": "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1004/train4/b97750603dc2ea03",
+        "variant": "sfr"
+      }
+    },
+    "updated": "2026-11-06 07:31:20 +0800",
+    "pid": 467,
+    "active": []
+  },
+  "hardware": {
+    "torch": "2.5.1+cu121",
+    "cuda": "12.1",
+    "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+    "visible_devices": "0",
+    "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+    "train_seed": 0,
+    "layout_seed": 1000
+  },
+  "training": {
+    "N": 70,
+    "episodes": 1600,
+    "pairs": [
+      [
+        1000,
+        0
+      ],
+      [
+        1001,
+        1
+      ],
+      [
+        1002,
+        2
+      ],
+      [
+        1003,
+        3
+      ],
+      [
+        1004,
+        4
+      ]
+    ]
+  },
+  "per_slot": {
+    "methods": [
+      "actor",
+      "critic_refine",
+      "critic_scratch",
+      "oracle"
+    ],
+    "tests": 20,
+    "episodes_per_test": 30,
+    "slots_per_test": 6000,
+    "warmup_episodes": 10,
+    "iterations": {
+      "critic_refine": 30,
+      "critic_scratch": 150,
+      "oracle": 100
+    }
+  },
+  "parent_records": [
+    {
+      "id": "e6ea37fff928f396",
+      "seed": 0,
+      "layout_seed": 1000,
+      "variant": "sfr",
+      "directory": "D:\\PythonCode\\SFR-SAC-revision-overnight\\outputs\\revision_local_overnight\\runs\\N70\\layout1000\\train0\\e6ea37fff928f396",
+      "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+      "config_hash": "e6ea37fff928f396",
+      "artifacts": {
+        "final_eval_summary.json": "66b0e400146b2020f43cdfde8e0284fee8de1c9c2870b69a7569126a2a0a44df",
+        "job.json": "a63abcaa96b123b6a5a0f39c239ce2f9682b0212b23e2f026ae6eecfbe0f4cfd",
+        "task.json": "a63abcaa96b123b6a5a0f39c239ce2f9682b0212b23e2f026ae6eecfbe0f4cfd",
+        "run_status.json": "3929671f9636b64bd95073efe3aecfa9bf265f4270a075b9d54e919a3c052187",
+        "hardware.json": "a04493624c10f6b0406fb668bf5bc30f29c6681f7ba2217c971d0e279a6a702c",
+        "environment.json": "487af8b3955cd8a18cbf80c0994a20d81d92912e6c86af54ee26561ac7c3a7c6",
+        "runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444"
+      }
+    },
+    {
+      "id": "507c74c7d42a61ca",
+      "seed": 1,
+      "layout_seed": 1001,
+      "variant": "sfr",
+      "directory": "D:\\PythonCode\\SFR-SAC-revision-overnight\\outputs\\revision_local_overnight\\runs\\N70\\layout1001\\train1\\507c74c7d42a61ca",
+      "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+      "config_hash": "507c74c7d42a61ca",
+      "artifacts": {
+        "final_eval_summary.json": "1b4d5a6a57ed2f1ea978daf96f73efcf658eeeb39ea64b94e9f9d6a1872a6c99",
+        "job.json": "1aea34817f616e1bad4b111474ec7cb71149e06a9b06e4a247965114783f3462",
+        "task.json": "1aea34817f616e1bad4b111474ec7cb71149e06a9b06e4a247965114783f3462",
+        "run_status.json": "4179a1d8023ef5301ffe3d1ccfd8025e3431000950e188ea46a13cbcc1d7398d",
+        "hardware.json": "9b818161d52d6a5f54b9434c97f8824c0b714b01c682d042645a18aeb7a19c8d",
+        "environment.json": "fdf6bb6cd5bfa01d751c120263e88a375e219bc10f2a709ca5657cd1060dadfd",
+        "runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444"
+      }
+    },
+    {
+      "id": "0f5e3700891474af",
+      "seed": 2,
+      "layout_seed": 1002,
+      "variant": "sfr",
+      "directory": "D:\\PythonCode\\SFR-SAC-revision-overnight\\outputs\\revision_local_overnight\\runs\\N70\\layout1002\\train2\\0f5e3700891474af",
+      "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+      "config_hash": "0f5e3700891474af",
+      "artifacts": {
+        "final_eval_summary.json": "0f8ad6db90c828a8656334c4559dac6ecc892a68b3601493f3f5c0023c9c703f",
+        "job.json": "9f262e3dfba602ef2fe7cc01eb11178bb60cb9569491ab232086b60ee629ddef",
+        "task.json": "9f262e3dfba602ef2fe7cc01eb11178bb60cb9569491ab232086b60ee629ddef",
+        "run_status.json": "eb1a265d6e1581829839c711ed4bbcb1cba8730d76d8703bb5fcfac7eb450b65",
+        "hardware.json": "a19cbea7bd8f2b67d4faa3e6142c784ad7c69730f04b942aec63d05c472c2247",
+        "environment.json": "e1dca0ef748ec522f87edc5f42c527fc5095a70920f7a2108d635bdd892fbb97",
+        "runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444"
+      }
+    },
+    {
+      "id": "5d60dd5c6e644568",
+      "seed": 3,
+      "layout_seed": 1003,
+      "variant": "sfr",
+      "directory": "D:\\PythonCode\\SFR-SAC-revision-overnight\\outputs\\revision_local_overnight\\runs\\N70\\layout1003\\train3\\5d60dd5c6e644568",
+      "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+      "config_hash": "5d60dd5c6e644568",
+      "artifacts": {
+        "final_eval_summary.json": "aef96c9bc8616efb0d0580b08e1e316f3d87f0832f8674af018dedecb70cff48",
+        "job.json": "6bf06a756ced366ab4cdbcb93f87aecf409c9b5ce1522e2da35c725b62c07a44",
+        "task.json": "6bf06a756ced366ab4cdbcb93f87aecf409c9b5ce1522e2da35c725b62c07a44",
+        "run_status.json": "f483ddd78604cd2347975384000d364a0659e6c796aea7f680a2a07c7cb35121",
+        "hardware.json": "fb42da46f5c09063a749cca9d6ad18414ef0805c629309a41848cdf6aa83af67",
+        "environment.json": "a7ab72b91b82242050ae4147232624c8a7e15d374acd15709191738c4fd36106",
+        "runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444"
+      }
+    },
+    {
+      "id": "b97750603dc2ea03",
+      "seed": 4,
+      "layout_seed": 1004,
+      "variant": "sfr",
+      "directory": "D:\\PythonCode\\SFR-SAC-revision-overnight\\outputs\\revision_local_overnight\\runs\\N70\\layout1004\\train4\\b97750603dc2ea03",
+      "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+      "config_hash": "b97750603dc2ea03",
+      "artifacts": {
+        "final_eval_summary.json": "539e8559c9939b9ebc849b31b06e553908940779e4429c5086c5d50c1249a003",
+        "job.json": "fb8b9ef9637e5f505537f89f4c5552fc597a64dae23168987478f417de8e92d5",
+        "task.json": "fb8b9ef9637e5f505537f89f4c5552fc597a64dae23168987478f417de8e92d5",
+        "run_status.json": "b3d85d5752a4bd76c674fa143df318f029e558177c68fc20ac445c735110115e",
+        "hardware.json": "b30d09b54fa7eb987c7b5790dcc49e487231ee0ce55cd603ed11e905ed0e9492",
+        "environment.json": "a32826c04e809c907566b7773a46b885060c8a51917c2cee2a6b4a516cd730f3",
+        "runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444"
+      }
+    }
+  ],
+  "archived_files": {
+    "README.md": "3d614a2029a2747560aba3f66c69b2b2f38a9f9fd317181f0b47ae20dd5c4594",
+    "STRONG_EVIDENCE_SUMMARY.md": "e5f8a941778bc015faf5e8a4549af6b476ae866f2048675dca59dba898eb75d4",
+    "data\\fair_critics_local_report.md": "be11a926b871d5815eb11a8e66c4e2d19ea0e9c8742e150a3665e62a3e7306de",
+    "data\\manifest.json": "592401c164dff006c1755ec4abb70656cf7ab5bd3300b9165d6321aec84a7df7",
+    "data\\per_slot_per_seed.csv": "48efd4846c0284694fbbcf964eae9a937a6b26806a355c907ecc2d9a72bb9007",
+    "data\\per_slot_provenance.json": "47b45c7ff16624b386dfe94dd9abcb945b59a18c31f63f69f893fc4d2554c1ba",
+    "data\\per_slot_report.md": "8f436184d701d852695e961e7bbb7fad03cf1ce74c8c7e8ff1b19f5b59c22dd3",
+    "data\\protocol.json": "149d1515e5d44a12f2c4f55984bb3d9f4d1feb2099132486a94f7db2ba115b6e",
+    "data\\provenance.json": "dd64defdcd7541a900baa1572278331e83ab5c596c6cfda1f46fa4b6ab44df16",
+    "data\\REVISION_REPORT.md": "117142d7ca7a2abaa152a1997f89bbe1b1c440384ca71107684d5edf194aba35",
+    "data\\suite_status.json": "38dea56decf40f8a14fe98d0285b91477b2e9b3e05ac78e0df18f1fa11f51907",
+    "figures\\Fig_revision_ap_channel_ablation.pdf": "2e7eb310d475d543c4d0c2474b2a63d7182ab3bdee316068a49bc2e7c377be55",
+    "figures\\Fig_revision_fair_critics.pdf": "3419d979a77a51c5ab174ee5858929ca9e0e1ba68c713419d887f4abc08b10f5",
+    "figures\\Fig_revision_latency.pdf": "5cf4d433e5dbf3c06b98b3c021f055437bfc913d8fdf9de6156bee7d25ad8c83",
+    "tables\\ap.csv": "cc82cf744d8dce4be3b612278906c131705378e88da4d75c337aac3ada30508e",
+    "tables\\ap.tex": "4b3da177ea7fbba0cf4ef779bc919e1216b3672b6b413697026c6a25e3b0fd58",
+    "tables\\cpo.csv": "61f77a783b451149fbb5095a07021ea55ad67f95051ae11097e260c6342f76c2",
+    "tables\\cpo.tex": "7c39c95d32ad7a5b49f6c366039dd6faf314f45cfeb1ea15ce9909dbb87df108",
+    "tables\\fair_critics.csv": "8c4af82135528051cb706b9ddfa0943adc30f2dbc3903c7ef5098742ec909186",
+    "tables\\fair_critics.tex": "216c7826f92009da1494c016b3bd35bda26952a976fcce6e1516cf36774d7b76",
+    "tables\\fair_critics_full5.csv": "042e53cd867c91afd9e942478bb7c47be2121cc7ca7fe37de9527fe38d444c20",
+    "tables\\fair_critics_full5.tex": "a998f7521c116cc2bbfa2386d10d21628278b4cc5a202c4473b13bbaf85677b8",
+    "tables\\horizon.csv": "a9cc7af2042041fe04aab04b323c44daad753c9486070d4a40f7e7422ec91306",
+    "tables\\horizon.tex": "e169ab7f989b67ddffbef23eb3b8d068e81cdd0668be8a75dffa9c24b9583dc2",
+    "tables\\latency.csv": "2e16668818b4ca574ae67eef1e3eb1d41b4c00deb4ba8cb74a34c9bd6e5e7bc1",
+    "tables\\latency.tex": "39ea79be6365811658ce3adb208d0dbda710d3f3b7bbe88b7e649de3408ac181",
+    "tables\\mismatch.csv": "77b5b9030f19368ae1d386f0fa7095531b337b5bcf1bea00f8499af23f24f3e0",
+    "tables\\mismatch.tex": "9d8dd9f7bbf9d1bfa481fb252370ba7d017cb2a1d462cc37886655aa42185e20",
+    "tables\\penalty_form.csv": "79c7a72dfc8e9ce9bcacb3c6927fd273006e3b4dcc08220d8343c7919567fb7a",
+    "tables\\penalty_form.tex": "3e47d57e9e522326ca02550081c7cbfb843453cb8e124a2ce125d1a01b640b03",
+    "tables\\per_slot.csv": "5604a6fa1b11a40173bd89241c2256e85d70c9125d2c26275e571d9226709889",
+    "tables\\per_slot.tex": "2788764b07983a19d20bbaac1fe9941b8a885bc66910b9f1a19e89eeeb2eccf8",
+    "data\\per_slot_runs\\source_manifest.json": "5de1fad7ea05b45b8a78590b6044c01abe622bc5a34d0876adaedfdb240a99bf",
+    "data\\per_slot_runs\\source_protocol.json": "3e07a10d3c88a8adcaeb96c0fd221b77fd578ec43b4f7b9d1de91ec28cbd4488",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\eval_episodes.csv": "9a9f1b5f5a4909c2199efeee02c387306e2c74f8c476eb6d6364a69929e5be4e",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\eval_slots.csv": "40afe61f99d0c984c893e4d6bce9f2b7e17e467f4db117c2efdb4ac5fa0d0922",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\per_device.csv": "84e6c72eafcf4ffd27b07af71608100e72dd85ac5982bfd94ee83a204765f3af",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\run_status.json": "17367efcad62cb3558b651ba473b2b399a409c1b17c5fffdfd7f08df6e4dd417",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\task.json": "082162baa2d98ecb0a72bce7795afc366a781815c639ca1ae87a754de3b1efc9",
+    "data\\per_slot_runs\\17cdfe55c0e1206e\\test_summary.json": "bf31b4d1d793cce80084bcea581e450ee5f7a7944615d708afb746202713dc29",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\eval_episodes.csv": "e132f63d9976d3d7cbaf33aae981196d806abc4ce3339431dedc83bef3979c5b",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\eval_slots.csv": "9a97d9f342941c44d3e4757045b0308d2f2e2cb0c90e866d3f2902234416785d",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\per_device.csv": "d848a529f1c37abe3abb5cf642e1185a732b7ec5ebffae0d58bde1d8312c10d9",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\run_status.json": "879681c10c5667697b8a288fd0dc16f7ca7f5e96bebe13d26ec5af11f4d10940",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\task.json": "6222ca9ccbb559ec84ee677bbcf0a19259f747c9153e0d42cdb148a8ce18537b",
+    "data\\per_slot_runs\\20354022ec8b0fdc\\test_summary.json": "43edc9ba026f43cca7daaa8b16c25bbc0397d19fc94236ca523685a6935cce04",
+    "data\\per_slot_runs\\2ea19079667c55f3\\eval_episodes.csv": "d6ad7d72f174d5f825570e1a5c029486707972fd08538730f9d4317326edc05c",
+    "data\\per_slot_runs\\2ea19079667c55f3\\eval_slots.csv": "1a0afa0e18e034b6032e8ec3031b5def3326a7e9ff1bb707a061515affa0e654",
+    "data\\per_slot_runs\\2ea19079667c55f3\\per_device.csv": "d4c8e538cf83f935085f263846dce95bd3028ec69adb6589b9284e9ae3d7b1b4",
+    "data\\per_slot_runs\\2ea19079667c55f3\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\2ea19079667c55f3\\run_status.json": "ef3e99114e9d16961f7843c49d65ec443ef5326bcfe3e2962ff52dc5368d4e65",
+    "data\\per_slot_runs\\2ea19079667c55f3\\task.json": "c18a8417d0146eeec46c68fb33402edc374f2e0ca8819b43df4b8f8cd3c71584",
+    "data\\per_slot_runs\\2ea19079667c55f3\\test_summary.json": "1ca76b6d3341c2b3f15115bd10ab391ade6aaba9ecd67d08673f7da3e0c2c9c1",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\eval_episodes.csv": "ce658e647248dea9cd0f54b3c6a4ff81eb848796bac89c0d049673a876d56beb",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\eval_slots.csv": "988e7bdb9ef214d3c7affdc285fdc604bf325f91fc718ed591b1a9bc234c2a56",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\per_device.csv": "6552d96fd737799e808e8b369abc337ea886e7196ac372f4fea6671b31f97f2a",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\run_status.json": "09c059cabd98402dbbb6d2464542aa6af962143b38141bcef8223d18d58d8d5f",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\task.json": "b87d6b271118e3836709f43d0175878934eaaf00ea5237d7f97359be8b8d9518",
+    "data\\per_slot_runs\\445f7c18e469a2c0\\test_summary.json": "5f8817e3248b6ecd4b02c991ea6c3ba19e1ce988e1e179077bcab5a552121361",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\eval_episodes.csv": "0c426fab6d7547195c4e458f9bf9352f69038e3e0cb8d9a71a7208d4e8a1a459",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\eval_slots.csv": "b2debd2d13cba491e19a4048a6508fb2a242c93fb06db323f27c2dfd050612c5",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\per_device.csv": "5ab2485067f1c0b01ba0b7e084eb66bac947345bc77f60d2a92b1283f36cc42d",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\run_status.json": "8003bbc7912a4d1907244f3cb439c40224d53b383a67769ffcdb763255894a1b",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\task.json": "7cdea764fb8e72b25eb2608fc57209e687689213dc8ecbc121bf1301dd5640fd",
+    "data\\per_slot_runs\\4a65a7bb2a7a8fb7\\test_summary.json": "fbb147fd7b9802c332cee6c360984a1c0f48d1a261b89042331b478b60d61c5f",
+    "data\\per_slot_runs\\596b43b354e5454f\\eval_episodes.csv": "07eeb4449d06be892da16f0bafd740b8363caf9ebf39781351bf764577dd6554",
+    "data\\per_slot_runs\\596b43b354e5454f\\eval_slots.csv": "b6e1ec3c6400a49c3c771fd790a5123b3bcbdc59f9affdc7ef403090295c8d17",
+    "data\\per_slot_runs\\596b43b354e5454f\\per_device.csv": "4b401c3f945a6f8bc1bedc4a048a8ba1db985abeccea13d3f0ec74f6d1d30212",
+    "data\\per_slot_runs\\596b43b354e5454f\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\596b43b354e5454f\\run_status.json": "42ac152a09990b1154aab1c087318f8e2dbfd64e02b0794963fe93ad92746c91",
+    "data\\per_slot_runs\\596b43b354e5454f\\task.json": "37a9d818e0c80440cbbfa46eb7dd6be2c6553077e8577ea08ddd3f980ce4e4f9",
+    "data\\per_slot_runs\\596b43b354e5454f\\test_summary.json": "65d7290286ee4221882ff1dab5b57326cfea2dd469329ba5ff654d39f707254b",
+    "data\\per_slot_runs\\69d9f68e38c41841\\eval_episodes.csv": "e54f08f6bf21ee990514ce93a3e86048d217d6d23c3141df4bf0f9f21e228f6f",
+    "data\\per_slot_runs\\69d9f68e38c41841\\eval_slots.csv": "879fb056e82824b1248954f17a518f14f4d8e08d2c5cbcd92013c5d2c5fd8180",
+    "data\\per_slot_runs\\69d9f68e38c41841\\per_device.csv": "dc1cda472ed49485e1517e92dea54b1ce27b10e04a2b99f4035d231ce1cec627",
+    "data\\per_slot_runs\\69d9f68e38c41841\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\69d9f68e38c41841\\run_status.json": "80f8b3d1ab5a9d539b198cf4f7c1e734a7a0a6e1e4f317ee2d6e97fb5dee8029",
+    "data\\per_slot_runs\\69d9f68e38c41841\\task.json": "f39ceb14dc06ab42305921076b9007307d40f156688217d543d5c291fe414741",
+    "data\\per_slot_runs\\69d9f68e38c41841\\test_summary.json": "384dfe00fe541f9c0324b3031948011e6529250b8d3f237a4b516533464fd50c",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\eval_episodes.csv": "d4d3e76f796a5e6907bfcec67090c333a6ce653641b5358f499cd9608586138d",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\eval_slots.csv": "307dc5f3e40f1e6404b66f5ce3325dd67c35f9ad90a8074fca2e656f1afebad7",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\per_device.csv": "94bfdfcf2ae1de7b129dbc13f2347209a40cf6ef187f066c8ca1638aba2d26b6",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\run_status.json": "f490c30722e09598c1a645c241d273a341d86f3502eb851e861bbdf50f5b0284",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\task.json": "5c2f0f143c39ba9f1bcae9ce35c348a65a07e36c289195136c049944b2637920",
+    "data\\per_slot_runs\\6a282de296e5fc3c\\test_summary.json": "52ded26e02b0a39ee86b07ea26153f6a67f112d93f34279455631fb624158374",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\eval_episodes.csv": "ab0eb50e547d6958194062108b3cc93db2909269d13087ba411181e467abe89a",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\eval_slots.csv": "b054909ee611e51c9b8e4a6208bbf1bad5b185b6547652a58fd0b75e44bbd68e",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\per_device.csv": "78ff6fc4bb646a6837720f44fe7ee625b6b7f1b7d24449f13b882f4a5b202432",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\run_status.json": "dee6ae9d3668a278e731a69f298bdc4c7bfab3b825a6e6343dfb0249394b5d4f",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\task.json": "933bd5af92c61464c5ded852818f3e0e19a8cc8de495869b486c87b8ec93a8ec",
+    "data\\per_slot_runs\\7641e6794d08fb1f\\test_summary.json": "c821bfe38680ae03a84d490a38ed6e38ed004e7f4bb87764ff78c308c5978b4d",
+    "data\\per_slot_runs\\8065213087025bfc\\eval_episodes.csv": "1e28f6ce9552e3353396d1711d02b52ef2adbd5394c9373b83a23c8a4ef0809c",
+    "data\\per_slot_runs\\8065213087025bfc\\eval_slots.csv": "8d163c007fec6c079226eadeed238180bc6aa524ed498e46c7ee4258cae84dc7",
+    "data\\per_slot_runs\\8065213087025bfc\\per_device.csv": "3336c3108f8b4fbdee2d45b1d498cc79d2bc5c5b9d7a95ff97ba73b12a3990f5",
+    "data\\per_slot_runs\\8065213087025bfc\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\8065213087025bfc\\run_status.json": "8cea254a1c2c0ce60949a265994a9213905942fd21baab4a8fa9ead596d900b4",
+    "data\\per_slot_runs\\8065213087025bfc\\task.json": "4d8492920206069d0e0945bac841647c782dea315eea908dd03c32784b374b28",
+    "data\\per_slot_runs\\8065213087025bfc\\test_summary.json": "c4d39ac6975380695d1a6d94aff685e572f4802695df9ee6efd4f3d6139233d0",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\eval_episodes.csv": "489345ee6d2284c16f18bd4a1e9420499d3eaf6684b1bee9fb9d148a2efa5592",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\eval_slots.csv": "842ab7f010ff8ded83a1a4b351fc25e5c61363f3714b1ee2483eb9550698ded5",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\per_device.csv": "6ff695c3e6b648547c6db5702a22ea2e500c0aa0a3a21d3285a1790127f677f0",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\run_status.json": "9878dc62e63adaa3da8440b7d5b7ae54792a9fbdbe02b35ed3640eadbcf3ee5e",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\task.json": "c1fecefed0cbdce576307c2a07c80fbdd7a41a2f27edc8f5020d8a2c4d53a580",
+    "data\\per_slot_runs\\832f3cee500a0ee7\\test_summary.json": "f2542eef99e310da69857723ead1da26f0e69d4102c00180f2a6cba9a7576682",
+    "data\\per_slot_runs\\874f761d4833fd7e\\eval_episodes.csv": "ac34528fef630a6a0f4c27e204408c79c11c1911bb0912a638f310f709eecece",
+    "data\\per_slot_runs\\874f761d4833fd7e\\eval_slots.csv": "340e83bef01a17bbc3f372c0849e41d79d0c0dc89978bd237b8b44edf739421d",
+    "data\\per_slot_runs\\874f761d4833fd7e\\per_device.csv": "a500da9d607ac9385fc13f713d55323ab23be9462a7814179362f875a2fbf512",
+    "data\\per_slot_runs\\874f761d4833fd7e\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\874f761d4833fd7e\\run_status.json": "4150a01961b50af78b6e72c9431e50670ee5abf278be53de886f32b10c99a1a6",
+    "data\\per_slot_runs\\874f761d4833fd7e\\task.json": "f85e521ffc6172326342a06c65e88810c8b66bfd888bbed3127e82d98a480821",
+    "data\\per_slot_runs\\874f761d4833fd7e\\test_summary.json": "f1353d1c51a3c4c50aea0e2118e8647216607d0545563e6daeba4bd7243f0691",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\eval_episodes.csv": "dd8884bcb6543a1a725c6a2aea87ce5aa043804fc7afe315526441a73c3697bb",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\eval_slots.csv": "de67c8728c6ae1a339f7f314b36a94dee8d8f9ba73af609e8d74ec7e81244490",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\per_device.csv": "88190cb38a2100a39209e552eb0b3f9930515a70f437c2f0bc5f65d7e1293072",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\run_status.json": "b38b68dbf1d1eb33ee1f470ab444721315f16f53007b151345bd8b86418e100e",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\task.json": "1a1088087ebb3c88a88d44c14199691d2125fbb47fdd365bdf69f5a322facb91",
+    "data\\per_slot_runs\\8a82fd7c01a342f3\\test_summary.json": "b456079afd1ddb0bdb7c0f1d8b7f05119c584486dbe91ca34782bb5954ca83e7",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\eval_episodes.csv": "891991e7a633018fa0e72871eae11f6a9cae0a3552a9e856caaed61a1cda764a",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\eval_slots.csv": "1477db5fa6ae02e0a786b4739f6b636352ca61337277220b0720278f229eb8df",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\per_device.csv": "de4a8a8d7fe6d90ab9a7a68729554d67fd2857ae205e7dbdfdff6409bfa2853d",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\run_status.json": "bb28110081033aae02a6e2b7c4a2adbc31681014313eae2ea71afbb13f80a0c0",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\task.json": "e6afc31f18b7f17c0da94a3b451aa14f125470ef024e44df545f2e012de9aed8",
+    "data\\per_slot_runs\\9ae0e47ff81bb9e9\\test_summary.json": "1dc1db06bd664ae0e5b9f39866012bc733e5074c0d1ead069ef427a0ce432dea",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\eval_episodes.csv": "fa7a22fd6d43edd4f48a3b1f9c465aac882af4c554aa1a162117078275287b97",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\eval_slots.csv": "989b678db93efecf8d0a7a54e856bdffe1709af08866c82e495dfbce773b6e13",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\per_device.csv": "65b378e8833ded5ae7a66d0270df23e01e2758162f368773d5193c15c0733577",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\run_status.json": "40d955cd9f2478999421dd107cd773921df9a4cd58602025918cc6259b06b64f",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\task.json": "e83e115f6f899b8a376a6624f7c07a763d5d8c10786628dd249116b8967397fc",
+    "data\\per_slot_runs\\cccc896f5cd497ed\\test_summary.json": "2b344a444ab2ad9b17ab42290e5d3d1ae03277f28531f203ea33220de0b105f3",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\eval_episodes.csv": "05e8c0218c35c6296a11d5580443d601d221f8a2b11096f4614bb4b0d819e73d",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\eval_slots.csv": "74bce36a766392fc7ec35c39b312597a380df5f5123719e0f96655b3ea31dfd5",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\per_device.csv": "4736891d357026f1d74e8598e158354e70d574bcb331242dd127987e5fa616bc",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\run_status.json": "0b329bac71260a53da465b907487ffe3dbd087eeed01b32ad01160f7fd3a44ea",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\task.json": "0887ef4104178b2e1dfe376e4f47b6e3375d6ad015a8592c8f3da3e51db2595c",
+    "data\\per_slot_runs\\d0c76a4977e4e12b\\test_summary.json": "d37220e0710db67699a5d261a0252d23d4e39753718be412d3c52f6ac931556c",
+    "data\\per_slot_runs\\eab763441770dbd0\\eval_episodes.csv": "9842d57dec71366b5d346d922408d5d1ac279c04f2f6695dee97d7f4775bcc79",
+    "data\\per_slot_runs\\eab763441770dbd0\\eval_slots.csv": "56c2499177bb6a3b78ac8d816bce138da4e34a409232a8eb6ebe4a1b8ce0867b",
+    "data\\per_slot_runs\\eab763441770dbd0\\per_device.csv": "6d6c90587a4a1599688cc8f5375afc4aa7c0eff7bdba95192c533050a345050b",
+    "data\\per_slot_runs\\eab763441770dbd0\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\eab763441770dbd0\\run_status.json": "40e4e052d7da71c2ca5bcb928298d9c77d92738eb6c87746e31d26167e156ecc",
+    "data\\per_slot_runs\\eab763441770dbd0\\task.json": "2060b283503f9023c9e1a7df73ec068a0ac4e1b7c738dff9dc144f7205fa6161",
+    "data\\per_slot_runs\\eab763441770dbd0\\test_summary.json": "bc35c113a240a81fc9bca590e85b67a74f720e854d9c1ae3283d40e8121caf69",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\eval_episodes.csv": "6977dc252b15cfd043d29206f7e0dc6b88334ae5ca8389bec4ea13807b38b668",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\eval_slots.csv": "f3cc20ce28418e7176bfbc5baf0ec72b322c0d478f4bd3bb1585219c3f96e7ed",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\per_device.csv": "0cc259c7a052a15fa2a485afd428c6b65cc0fd04ffbe2a4362c8203c887c23d9",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\run_status.json": "0515b3e131c58543ae8b46981c9908d50b7cc8679bbdb0b972e06b27c1fd4b64",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\task.json": "d3da331e9b4f43a9320f60d40f39bd3f413eaa5f2fdefbf05f3cf767ce23c8e5",
+    "data\\per_slot_runs\\ee3240efda7e9b8c\\test_summary.json": "59c0e4889f9f0d700b7749ae931c1562ad27227066c31ba455816b4f0474b0c8",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\eval_episodes.csv": "bc7f51374c2fc85959c31532575b0ad91d2c203d5b21d6ee0d886f8a83c30a8f",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\eval_slots.csv": "f6fa42f8da4cb3088c719f1e91aac0b0cc4e8b7a31e3a2290c8cc435caebb0a9",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\per_device.csv": "314ce397b15d1c77209bc8d4e5326b59d7027ca54ff623a14c3e04ae3793b2ca",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\run_status.json": "36e81c4408257291842d70628146917e5fc743ce5aabc858a5e716408b32c814",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\task.json": "759c79c298bfaf49548087102f6502d7350e5e8d4fbaf246cedee6e492739be1",
+    "data\\per_slot_runs\\f15c84a714a23e0d\\test_summary.json": "12abc4d17e6be8c740659c5bca4fcff10a74525a50c45aac230c680e447907a5",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\eval_episodes.csv": "27eb349d18ee0c2f65a0c33e9e08c35fdbcb3b8dbd56de0026b2b8bcace7b9eb",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\eval_slots.csv": "65736677f9d0e8e9d81fc8e7577f2f8fc854d4610155b55f8ffdc92c72ca0a9c",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\per_device.csv": "7a323931716f65cdbc0c27552f4d151958c9448ee2bc95b1fe47fd770254b949",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\revision_source.json": "c580e27d453c1a19130c120a7d61e79f07dd7040730e0f5debf53e3a43adf4b7",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\run_status.json": "a8d47e0d3adbb74402685e993bcdcb1d8c47f4b03454d1fbcb6d5858161d084a",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\task.json": "5076df557e5581e032d155d1c657ea8c0cf6dc7c05669682c9d2093d71a1bbdf",
+    "data\\per_slot_runs\\f2b28af6675f82ea\\test_summary.json": "dcc45e4265491e6e0dd9040baf605bb5714f86eaf30beb4dd7cef8aff240f9bd",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\environment.json": "e1dca0ef748ec522f87edc5f42c527fc5095a70920f7a2108d635bdd892fbb97",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\final_eval_summary.json": "0f8ad6db90c828a8656334c4559dac6ecc892a68b3601493f3f5c0023c9c703f",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\hardware.json": "a19cbea7bd8f2b67d4faa3e6142c784ad7c69730f04b942aec63d05c472c2247",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\job.json": "9f262e3dfba602ef2fe7cc01eb11178bb60cb9569491ab232086b60ee629ddef",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\run_status.json": "eb1a265d6e1581829839c711ed4bbcb1cba8730d76d8703bb5fcfac7eb450b65",
+    "data\\per_slot_runs\\parents\\0f5e3700891474af\\task.json": "9f262e3dfba602ef2fe7cc01eb11178bb60cb9569491ab232086b60ee629ddef",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\environment.json": "fdf6bb6cd5bfa01d751c120263e88a375e219bc10f2a709ca5657cd1060dadfd",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\final_eval_summary.json": "1b4d5a6a57ed2f1ea978daf96f73efcf658eeeb39ea64b94e9f9d6a1872a6c99",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\hardware.json": "9b818161d52d6a5f54b9434c97f8824c0b714b01c682d042645a18aeb7a19c8d",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\job.json": "1aea34817f616e1bad4b111474ec7cb71149e06a9b06e4a247965114783f3462",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\run_status.json": "4179a1d8023ef5301ffe3d1ccfd8025e3431000950e188ea46a13cbcc1d7398d",
+    "data\\per_slot_runs\\parents\\507c74c7d42a61ca\\task.json": "1aea34817f616e1bad4b111474ec7cb71149e06a9b06e4a247965114783f3462",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\environment.json": "a7ab72b91b82242050ae4147232624c8a7e15d374acd15709191738c4fd36106",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\final_eval_summary.json": "aef96c9bc8616efb0d0580b08e1e316f3d87f0832f8674af018dedecb70cff48",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\hardware.json": "fb42da46f5c09063a749cca9d6ad18414ef0805c629309a41848cdf6aa83af67",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\job.json": "6bf06a756ced366ab4cdbcb93f87aecf409c9b5ce1522e2da35c725b62c07a44",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\run_status.json": "f483ddd78604cd2347975384000d364a0659e6c796aea7f680a2a07c7cb35121",
+    "data\\per_slot_runs\\parents\\5d60dd5c6e644568\\task.json": "6bf06a756ced366ab4cdbcb93f87aecf409c9b5ce1522e2da35c725b62c07a44",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\environment.json": "a32826c04e809c907566b7773a46b885060c8a51917c2cee2a6b4a516cd730f3",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\final_eval_summary.json": "539e8559c9939b9ebc849b31b06e553908940779e4429c5086c5d50c1249a003",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\hardware.json": "b30d09b54fa7eb987c7b5790dcc49e487231ee0ce55cd603ed11e905ed0e9492",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\job.json": "fb8b9ef9637e5f505537f89f4c5552fc597a64dae23168987478f417de8e92d5",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\run_status.json": "b3d85d5752a4bd76c674fa143df318f029e558177c68fc20ac445c735110115e",
+    "data\\per_slot_runs\\parents\\b97750603dc2ea03\\task.json": "fb8b9ef9637e5f505537f89f4c5552fc597a64dae23168987478f417de8e92d5",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\environment.json": "487af8b3955cd8a18cbf80c0994a20d81d92912e6c86af54ee26561ac7c3a7c6",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\final_eval_summary.json": "66b0e400146b2020f43cdfde8e0284fee8de1c9c2870b69a7569126a2a0a44df",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\hardware.json": "a04493624c10f6b0406fb668bf5bc30f29c6681f7ba2217c971d0e279a6a702c",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\job.json": "a63abcaa96b123b6a5a0f39c239ce2f9682b0212b23e2f026ae6eecfbe0f4cfd",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\runtime.json": "05fa688d0b26702d355ddb544983df7f774d116a4fe03aab621effbf6bf03444",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\run_status.json": "3929671f9636b64bd95073efe3aecfa9bf265f4270a075b9d54e919a3c052187",
+    "data\\per_slot_runs\\parents\\e6ea37fff928f396\\task.json": "a63abcaa96b123b6a5a0f39c239ce2f9682b0212b23e2f026ae6eecfbe0f4cfd"
+  },
+  "report_generator": "revision.report.generate",
+  "formal_training_or_optimization_run_during_recovery": false
+}

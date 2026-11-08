@@ -1,0 +1,9 @@
+{
+  "torch": "2.5.1+cu121",
+  "cuda": "12.1",
+  "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+  "visible_devices": "0",
+  "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010",
+  "train_seed": 1,
+  "layout_seed": 1001
+}

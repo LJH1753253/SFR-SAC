@@ -1,0 +1,13 @@
+{
+  "status": "done",
+  "start_time": "2026-11-06 05:01:53 +0800",
+  "end_time": "2026-11-06 05:23:06 +0800",
+  "command": [
+    "/home/jinhao/anaconda/envs/vec-sac/bin/python",
+    "-m",
+    "revision.worker",
+    "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/per_slot/d0c76a4977e4e12b/task.json"
+  ],
+  "pid": 1597,
+  "error": null
+}

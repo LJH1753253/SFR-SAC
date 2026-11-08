@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "revision_source_digest": "0681f3c0d6721a33ceb6b500e0c5856ba4a30499afdbfecb0f576c197cfd7021",
+  "stages": [
+    "fair_critics",
+    "per_slot",
+    "mismatch",
+    "cpo",
+    "horizon",
+    "penalty_form",
+    "ap",
+    "latency"
+  ],
+  "pairs5": [
+    [
+      1000,
+      0
+    ],
+    [
+      1001,
+      1
+    ],
+    [
+      1002,
+      2
+    ],
+    [
+      1003,
+      3
+    ],
+    [
+      1004,
+      4
+    ]
+  ],
+  "pairs3": [
+    [
+      1000,
+      0
+    ],
+    [
+      1001,
+      1
+    ],
+    [
+      1002,
+      2
+    ]
+  ],
+  "test_stream": "2900000 + 100*N + layout_seed - 1000",
+  "test_episodes": 100,
+  "per_slot_episodes": 30,
+  "per_slot_warmup_episodes": 10,
+  "per_slot_iterations": {
+    "critic_refine": 30,
+    "critic_scratch": 150,
+    "oracle": 100
+  },
+  "penalty_betas": [
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.5
+  ],
+  "mismatch": {
+    "mec_capacity": {
+      "environment": {
+        "bs_cpu_base": 64000000000.0
+      },
+      "assumptions": {
+        "bs_cpu_base": 80000000000.0
+      }
+    },
+    "pa_efficiency": {
+      "environment": {
+        "tx_pa_efficiency": 0.25
+      },
+      "assumptions": {
+        "tx_pa_efficiency": 0.35
+      }
+    },
+    "cycles": {
+      "environment": {
+        "cycles_per_bit": 3600.0
+      },
+      "assumptions": {
+        "cycles_per_bit": 3000.0
+      }
+    },
+    "mec_sharing": {
+      "environment": {
+        "mec_sharing": "max_min_fair"
+      },
+      "assumptions": {}
+    }
+  },
+  "latency_sizes": [
+    50,
+    70,
+    200
+  ],
+  "quick": false,
+  "notes": {
+    "fair_critics": "Safe TD3 and a fixed-penalty SAC receive SFR-SAC's structured critics (and, for td3_struct_split, its split actor network), isolating the critic structure from the constrained-RL algorithm.",
+    "per_slot": "Direct per-slot optimization of the trained critics' objective and a full-information oracle; tests whether the actor is needed beyond amortization (latency).",
+    "mismatch": "The true environment differs from the physical constants given to SFR-SAC's structured networks; model-free Safe TD3 and full-information MB-greedy are trained/tuned in the same perturbed environment.",
+    "horizon": "E1: gamma 0 vs 0.99 for learners with generic (MLP) critics; both arms use sampled AP entropy because the exact entropy controls require gamma 0. CPO arms are in stage cpo.",
+    "cpo": "E7: CPO with the split service-flow actor, gamma 0 and gamma 0.99, main grid N and pairs.",
+    "penalty_form": "E2: hinge vs untruncated Lagrangian actor penalty for SFR-SAC at d = 8, 10, 12 %.",
+    "ap": "E3: learned AP vs best-channel AP, and AP-dependent vs AP-independent gains.",
+    "latency": "E6: one CPU thread; initialized networks for N = 50, 70, 200 plus the trained N = 70 actor."
+  }
+}

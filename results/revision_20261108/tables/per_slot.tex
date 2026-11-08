@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Per-slot optimization at $N=70$ over five paired deployments.}
+\label{tab:per_slot}
+\footnotesize
+\begin{tabular}{lccccc}
+\hline
+Method & Cost (\%) & Energy (mJ/device/slot) & BFSR (\%) & Median (ms) & P95 (ms) \\
+\hline
+Actor & 9.37 $\pm$ 0.12 & 9.68 $\pm$ 2.20 & 90.44 $\pm$ 13.90 & 1.212 $\pm$ 0.106 & 2.373 $\pm$ 0.512 \\
+Critic refine & 9.73 $\pm$ 0.15 & 9.19 $\pm$ 1.64 & 84.15 $\pm$ 1.82 & 200.389 $\pm$ 24.595 & 291.438 $\pm$ 82.482 \\
+Critic scratch & 9.86 $\pm$ 0.03 & 8.53 $\pm$ 0.35 & 74.70 $\pm$ 3.97 & 933.709 $\pm$ 134.725 & 1204.192 $\pm$ 292.072 \\
+Numerical optimizer & 10.00 $\pm$ 0.00 & 7.71 $\pm$ 0.33 & 53.24 $\pm$ 0.87 & 101.935 $\pm$ 9.815 & 178.389 $\pm$ 63.558 \\
+\hline
+\end{tabular}
+\end{table}

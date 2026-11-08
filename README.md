@@ -99,6 +99,11 @@ and matching CSV/LaTeX tables are retained beside it. The revision runner and
 protocol are included in `revision/`, `run_revision.sh`, and
 `run_remaining.sh`.
 
+The recovered per-slot optimization evidence is archived in
+`results/revision_20261108/tables/per_slot.csv` and
+`results/revision_20261108/data/per_slot_report.md`, with per-seed raw summaries
+and provenance under `results/revision_20261108/data/per_slot_runs/`.
+
 Generate the primary revision figures with:
 
 ```bash

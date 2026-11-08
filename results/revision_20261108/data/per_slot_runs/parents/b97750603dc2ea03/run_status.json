@@ -1,0 +1,14 @@
+{
+  "status": "done",
+  "start_time": "2026-11-06 04:39:46 +0800",
+  "end_time": "2026-11-06 06:12:27 +0800",
+  "command": [
+    "/home/jinhao/anaconda/envs/vec-sac/bin/python",
+    "-m",
+    "cloud24.worker",
+    "/mnt/d/PythonCode/SFR-SAC-revision-overnight/outputs/revision_local_overnight/runs/N70/layout1004/train4/b97750603dc2ea03/task.json"
+  ],
+  "pid": 1483,
+  "cuda_visible_devices": "0",
+  "error": null
+}

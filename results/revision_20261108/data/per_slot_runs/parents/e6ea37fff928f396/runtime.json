@@ -1,0 +1,11 @@
+{
+  "python": "3.9.23 (main, Jun  5 2025, 13:40:20) \n[GCC 11.2.0]",
+  "torch": "2.5.1+cu121",
+  "numpy": "2.0.2",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "cpu": "x86_64",
+  "device": "cuda",
+  "configured_torch_threads": 1,
+  "cuda_version": "12.1",
+  "source_digest": "9c00e9d775dfde3da37e852d23b6583b93fd9296bb15c52d8f70ab78d6dc9010"
+}
