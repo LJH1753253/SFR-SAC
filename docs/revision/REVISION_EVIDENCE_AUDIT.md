@@ -1,8 +1,8 @@
 # IoT-J Revision Evidence Audit
 
-**Audit date:** 2026-11-09  
-**Scope:** read-only consistency and mechanism audit for the IoT-J supplementary experiments.  
-**Repository:** SFR-SAC  
+**Audit date:** 2026-11-09
+**Scope:** read-only consistency and mechanism audit for the IoT-J supplementary experiments.
+**Repository:** SFR-SAC
 
 This audit does not retrain policies, change algorithm code, or overwrite historical outputs. The diagnostic script and its generated files are in [`diagnostics/revision_evidence_audit_20261109.py`](../../diagnostics/revision_evidence_audit_20261109.py) and [`diagnostics/revision_evidence_audit_20261109/`](../../diagnostics/revision_evidence_audit_20261109/).
 
@@ -170,4 +170,3 @@ No P0 corruption or file-mapping error was found. Formal outputs were not modifi
 - Fair-Critics local report: [`fair_critics_local_report.md`](../../results/revision_20261108/data/fair_critics_local_report.md)
 - Paired old/new diagnostic: [`original_vs_fair_sfr.csv`](../../diagnostics/revision_evidence_audit_20261109/original_vs_fair_sfr.csv)
 - Diagnostic JSON: [`diagnostics.json`](../../diagnostics/revision_evidence_audit_20261109/diagnostics.json)
-
