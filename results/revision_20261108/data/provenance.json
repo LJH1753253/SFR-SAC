@@ -1,0 +1,28 @@
+{
+  "study": "Paper1 SFR-SAC IoT-J revision",
+  "archive_date": "2026-11-08",
+  "local_fair_critics": {
+    "output": "outputs/fair_critics_20261107_v3",
+    "pairs": 5,
+    "tasks": 70,
+    "status": "finished",
+    "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a"
+  },
+  "container_remaining": {
+    "archive": "revision_remaining_results_20261108.tar.gz",
+    "archive_sha256": "8254e9bdca4adebb75ae2ebd2a414117a7c91d3d361a0c4cef8f7b938ccb434e",
+    "stages": ["mismatch", "cpo", "horizon", "penalty_form", "ap", "latency"],
+    "failed_tasks": 0,
+    "status": "finished",
+    "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a"
+  },
+  "code_commit_base": "b75f003",
+  "working_tree_revision": "revision-preflight with runner/report/provenance fixes",
+  "notes": [
+    "Checkpoints are not included in the Git repository archive.",
+    "The complete stage CSV and LaTeX tables are retained under results/revision_20261108/tables.",
+    "The short summary is a primary-evidence selection; it does not replace the complete report."
+  ]
+}

@@ -35,6 +35,25 @@ class DeterministicActor(nn.Module):
         return torch.tanh(raw) * self.max_action
 
 
+class DeterministicPolicyAdapter(nn.Module):
+    """TD3 actor built from a hybrid policy network that returns (mean, log_std, AP logits).
+
+    Offloading ratio and power use tanh(mean); the AP block is a per-ED softmax mapped to [-1, 1],
+    as in the MLP TD3 actor with the channel prior. Used to give TD3 the same split service-flow
+    network as SFR-SAC in the revision's fair-critic study.
+    """
+
+    def __init__(self, policy, max_action: float = 1.0):
+        super().__init__()
+        self.policy = policy
+        self.max_action = float(max_action)
+
+    def forward(self, s: torch.Tensor) -> torch.Tensor:
+        mean, _, logits = self.policy(s)
+        ap = 2.0 * F.softmax(logits, dim=-1) - 1.0
+        return torch.cat([torch.tanh(mean), ap.reshape(s.shape[0], -1)], dim=1) * self.max_action
+
+
 @dataclass
 class TD3Config:
     gamma: float = 0.99
@@ -74,6 +93,11 @@ class TD3Agent:
         num_rsu: int = 1,
         ap_projection_mode: str = "legacy",
         ap_prior=None,
+        critic_factory=None,
+        cost_critic_factory=None,
+        policy_factory=None,
+        energy_component_loss_weight: float = 1.0,
+        cost_delivery_loss_weight: float = 1.0,
     ):
         self.state_dim = int(state_dim)
         self.action_dim = int(action_dim)
@@ -121,19 +145,36 @@ class TD3Agent:
         else:
             self.yc_clamp_max = float(yc_clamp_max_raw)
         self._reset_diag_episode()
-        self.actor = DeterministicActor(state_dim, action_dim, max_action, ap_prior=ap_prior,
-                                        num_devices=self.num_devices, num_rsu=self.num_rsu).to(self.device)
+        # Optional structured networks (revision fair-critic study); defaults keep the original TD3.
+        self.structured_energy_enabled = critic_factory is not None
+        self.structured_cost_enabled = cost_critic_factory is not None
+        self.energy_component_loss_weight = float(energy_component_loss_weight)
+        self.cost_delivery_loss_weight = float(cost_delivery_loss_weight)
+        if self.structured_energy_enabled and float(cfg.gamma) != 0.0:
+            raise ValueError("Structured energy critics predict immediate outcomes; gamma must be zero")
+        if self.structured_cost_enabled and (not self.use_lagrangian or self.cost_critic_target_mode != "immediate"):
+            raise ValueError("Structured cost critics require the Lagrangian TD3 with immediate cost targets")
+        if policy_factory is None:
+            self.actor = DeterministicActor(state_dim, action_dim, max_action, ap_prior=ap_prior,
+                                            num_devices=self.num_devices, num_rsu=self.num_rsu).to(self.device)
+        else:
+            with torch.random.fork_rng(devices=[]):
+                policy = policy_factory(state_dim, self.num_devices, self.num_rsu, max_action=max_action,
+                                        ap_prior=ap_prior)
+            self.actor = DeterministicPolicyAdapter(policy, max_action).to(self.device)
         self.actor_target = copy.deepcopy(self.actor)
-        self.q1 = Critic(state_dim, action_dim).to(self.device)
-        self.q2 = Critic(state_dim, action_dim).to(self.device)
+        reward_critic = critic_factory or Critic
+        self.q1 = reward_critic(state_dim, action_dim).to(self.device)
+        self.q2 = reward_critic(state_dim, action_dim).to(self.device)
         self.q1_target = copy.deepcopy(self.q1)
         self.q2_target = copy.deepcopy(self.q2)
         self.actor_opt = torch.optim.Adam(self.actor.parameters(), lr=cfg.lr)
         self.q1_opt = torch.optim.Adam(self.q1.parameters(), lr=cfg.lr)
         self.q2_opt = torch.optim.Adam(self.q2.parameters(), lr=cfg.lr)
         if self.use_lagrangian:
-            self.qc1 = CostCritic(state_dim, action_dim).to(self.device)
-            self.qc2 = CostCritic(state_dim, action_dim).to(self.device)
+            cost_critic = cost_critic_factory or CostCritic
+            self.qc1 = cost_critic(state_dim, action_dim).to(self.device)
+            self.qc2 = cost_critic(state_dim, action_dim).to(self.device)
             self.qc1_target = copy.deepcopy(self.qc1)
             self.qc2_target = copy.deepcopy(self.qc2)
             self.qc1_opt = torch.optim.Adam(self.qc1.parameters(), lr=cfg.lr)
@@ -317,7 +358,19 @@ class TD3Agent:
 
     def update(self, replay_buffer, batch_size: int = 256) -> dict:
         self.total_it += 1
-        states, actions, rewards, costs, next_states, dones = replay_buffer.sample(batch_size)
+        delivery_labels = energy_labels = None
+        if self.structured_energy_enabled:
+            transition, delivery_labels, energy_labels = replay_buffer.sample_with_physics(batch_size)
+            states, actions, rewards, costs, next_states, dones = transition
+            energy_labels = torch.as_tensor(energy_labels, dtype=torch.float32, device=self.device)
+            if delivery_labels is not None:
+                delivery_labels = torch.as_tensor(delivery_labels, dtype=torch.float32, device=self.device)
+        elif self.structured_cost_enabled:
+            transition, delivery_labels = replay_buffer.sample_with_delivery(batch_size)
+            states, actions, rewards, costs, next_states, dones = transition
+            delivery_labels = torch.as_tensor(delivery_labels, dtype=torch.float32, device=self.device)
+        else:
+            states, actions, rewards, costs, next_states, dones = replay_buffer.sample(batch_size)
         s = torch.tensor(states, dtype=torch.float32, device=self.device)
         a = torch.tensor(actions, dtype=torch.float32, device=self.device)
         r = torch.tensor(rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
@@ -353,25 +406,49 @@ class TD3Agent:
                     y_c = torch.clamp(y_c, min=0.0)
                 else:
                     y_c = torch.clamp(y_c, 0.0, self.yc_clamp_max)
-        q1 = self.q1(s, a)
-        q2 = self.q2(s, a)
-        loss_q1 = F.mse_loss(q1, y)
-        loss_q2 = F.mse_loss(q2, y)
+        if self.structured_energy_enabled:
+            # Same losses as SFR-SAC: Huber on the reward plus per-device energy components.
+            q1, components1 = self.q1.predict_energy(s, a)
+            q2, components2 = self.q2.predict_energy(s, a)
+            loss_q1 = F.smooth_l1_loss(q1, y, beta=1.0) + self.energy_component_loss_weight * F.smooth_l1_loss(
+                components1, energy_labels, beta=0.1)
+            loss_q2 = F.smooth_l1_loss(q2, y, beta=1.0) + self.energy_component_loss_weight * F.smooth_l1_loss(
+                components2, energy_labels, beta=0.1)
+        else:
+            q1 = self.q1(s, a)
+            q2 = self.q2(s, a)
+            loss_q1 = F.mse_loss(q1, y)
+            loss_q2 = F.mse_loss(q2, y)
         self.q1_opt.zero_grad()
         loss_q1.backward()
+        if self.structured_energy_enabled:
+            torch.nn.utils.clip_grad_norm_(self.q1.parameters(), max_norm=1.0)
         self.q1_opt.step()
         self.q2_opt.zero_grad()
         loss_q2.backward()
+        if self.structured_energy_enabled:
+            torch.nn.utils.clip_grad_norm_(self.q2.parameters(), max_norm=1.0)
         self.q2_opt.step()
         if self.use_lagrangian:
-            qc1 = self.qc1(s, a)
-            qc2 = self.qc2(s, a)
-            loss_qc1 = F.mse_loss(qc1, y_c)
-            loss_qc2 = F.mse_loss(qc2, y_c)
+            if self.structured_cost_enabled:
+                qc1, delivery1 = self.qc1.predict(s, a)
+                qc2, delivery2 = self.qc2.predict(s, a)
+                loss_qc1 = F.smooth_l1_loss(qc1, y_c, beta=0.1) + self.cost_delivery_loss_weight * F.smooth_l1_loss(
+                    delivery1, delivery_labels, beta=0.1)
+                loss_qc2 = F.smooth_l1_loss(qc2, y_c, beta=0.1) + self.cost_delivery_loss_weight * F.smooth_l1_loss(
+                    delivery2, delivery_labels, beta=0.1)
+            else:
+                qc1 = self.qc1(s, a)
+                qc2 = self.qc2(s, a)
+                loss_qc1 = F.mse_loss(qc1, y_c)
+                loss_qc2 = F.mse_loss(qc2, y_c)
             loss_qc = loss_qc1 + loss_qc2
             self.qc1_opt.zero_grad()
             self.qc2_opt.zero_grad()
             loss_qc.backward()
+            if self.structured_cost_enabled:
+                torch.nn.utils.clip_grad_norm_(self.qc1.parameters(), max_norm=1.0)
+                torch.nn.utils.clip_grad_norm_(self.qc2.parameters(), max_norm=1.0)
             self.qc1_opt.step()
             self.qc2_opt.step()
         else:

@@ -8,8 +8,12 @@ from agents.structured_actor import ServiceFlowActor
 
 
 class SplitServiceFlowActor(ServiceFlowActor):
-    def __init__(self, *args, ap_residual_bound=None, **kwargs):
+    def __init__(self, *args, ap_residual_bound=None, ap_rule="learned", **kwargs):
         super().__init__(*args, **kwargs)
+        if ap_rule not in {"learned", "max_gain"}:
+            raise ValueError("ap_rule must be 'learned' or 'max_gain'")
+        # "max_gain" executes the best-channel AP (revision E3); x and p are still learned.
+        self.ap_rule = ap_rule
         self.ap_device_encoder = copy.deepcopy(self.device_encoder)
         self.ap_global_encoder = copy.deepcopy(self.global_encoder)
         self.ap_device_embedding = copy.deepcopy(self.device_embedding)
@@ -52,6 +56,8 @@ class SplitServiceFlowActor(ServiceFlowActor):
             bound = float(self.ap_residual_bound)
             residual = bound * torch.tanh(residual / bound)
         logits = residual if self.ap_prior is None else residual + self.ap_prior(state)
+        if self.ap_rule == "max_gain":
+            logits = 50.0 * (links - links.max(-1, keepdim=True).values).detach()
         return mean, log_std, logits
 
 

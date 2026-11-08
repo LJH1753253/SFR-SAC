@@ -56,6 +56,7 @@ DEFAULTS = dict(
     tx_pa_efficiency=0.35,
     tx_circuit_power=0.05,
     tx_time_model="tdma_airtime",
+    mec_sharing="proportional",
     # workload
     arrival_low=400.0,
     arrival_high=1000.0,
@@ -80,6 +81,19 @@ DEFAULTS = dict(
     energy_ref=0.05,
     max_ep_steps=200,
 )
+
+
+def water_fill(demand, capacity):
+    """Max-min fair allocation of `capacity` among nonnegative `demand` values."""
+    demand = np.asarray(demand, dtype=np.float64)
+    allocation = np.zeros_like(demand)
+    remaining = float(capacity)
+    order = np.argsort(demand)
+    for k, i in enumerate(order):
+        share = remaining / (len(order) - k)
+        allocation[i] = min(demand[i], share)
+        remaining -= allocation[i]
+    return allocation
 
 
 def inf_dl_path_loss_db(d3d, fc_ghz):
@@ -113,6 +127,8 @@ class HeteroOffloadingEnv:
         self.energy_ref = float(p["energy_ref"])
         if p["tx_time_model"] not in {"tdma_airtime", "shared_completion"}:
             raise ValueError("Unknown tx_time_model")
+        if p["mec_sharing"] not in {"proportional", "max_min_fair"}:
+            raise ValueError("Unknown mec_sharing")
         self.bs_cpu_nominal = float(p["bs_cpu_base"])
         self.force_ap = str(p["force_ap"]).lower()
         if self.force_ap not in {"none", "max_gain"}:
@@ -266,7 +282,12 @@ class HeteroOffloadingEnv:
         cyc = y_del * cpb
         budget = self.mec_cpu * (1.0 - self.ul_time_fraction) * D
         total = cyc.sum()
-        adm = cyc if total <= budget else cyc / max(total, 1e-12) * budget
+        if total <= budget:
+            adm = cyc
+        elif self.params["mec_sharing"] == "proportional":
+            adm = cyc / max(total, 1e-12) * budget
+        else:  # max-min fair (water-filling) MEC sharing, used only for the model-mismatch study
+            adm = water_fill(cyc, budget)
         y_mec = np.minimum(y_del, adm / cpb)
         f_mec = y_del - y_mec
         failed = f_loc + f_del + f_mec

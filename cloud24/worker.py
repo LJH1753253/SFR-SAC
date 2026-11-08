@@ -40,7 +40,7 @@ def heldout(spec, out):
     device = cfg["execution"]["device"]
     torch.set_num_threads(1)
     original = source["summary"]
-    if method in {"safe", "penalty_sac", "vanilla", "td3_lag"}:
+    if method in {"safe", "penalty_sac", "vanilla", "td3_lag", "cpo"}:
         agent, _, _, _ = load_agent(parent/"model.pt", cfg, device=device)
         cfg["evaluation_rng_seed"] = spec["test_rng_seed"]
         summary = evaluate_agent(cfg, method, agent, n, seed, spec["test_episodes"], details_dir=out)

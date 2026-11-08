@@ -90,6 +90,21 @@ Energy is reported as mJ/device/slot. Cost, BFSR, and failure components are
 reported as percentages. The shipped figures use the terminology
 local-computing failure, edge-delivery failure, and MEC-service failure.
 
+## Revision Evidence (2026-11)
+
+The completed IoT-J revision evidence is archived under
+`results/revision_20261108/`. The primary-evidence summary is
+`results/revision_20261108/STRONG_EVIDENCE_SUMMARY.md`; complete stage reports
+and matching CSV/LaTeX tables are retained beside it. The revision runner and
+protocol are included in `revision/`, `run_revision.sh`, and
+`run_remaining.sh`.
+
+Generate the primary revision figures with:
+
+```bash
+python scripts/plot_revision_evidence.py
+```
+
 ## Repository Layout
 
 ```text

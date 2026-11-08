@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import copy
 import hashlib
+from functools import lru_cache
 from pathlib import Path
 
 import torch
 
 
+@lru_cache(maxsize=8)
 def source_digest(root=None):
     root = Path(root) if root is not None else Path(__file__).resolve().parents[1]
     digest = hashlib.sha256()

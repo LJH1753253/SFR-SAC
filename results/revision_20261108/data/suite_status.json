@@ -1,0 +1,16 @@
+{
+  "created": "2026-11-07 13:48:31 +0000",
+  "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+  "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+  "protocol_hash": "25c98d2abc8b0e88",
+  "quick": false,
+  "deadline_unix": null,
+  "stage": "latency",
+  "completed": 2,
+  "planned": 2,
+  "failed": {},
+  "updated": "2026-11-08 10:44:29 +0000",
+  "pid": 23987,
+  "active": [],
+  "status": "finished"
+}

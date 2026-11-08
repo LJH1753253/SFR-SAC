@@ -100,10 +100,13 @@ class CPOAgent:
     def __init__(self, state_dim, num_devices, num_rsu, cost_limit=0.10, gamma=0.99, lam=0.95,
                  cost_gamma=0.99, cost_lam=0.95, target_kl=0.01, damping=0.1, cg_iters=10,
                  backtrack_iters=10, backtrack_coeff=0.8, vf_lr=1e-3, vf_iters=80, vf_batch=256,
-                 steps_per_update=4000, device="cpu", ap_prior=None):
+                 steps_per_update=4000, device="cpu", ap_prior=None, actor_factory=None, fisher_fraction=1.0):
         self.N, self.M = int(num_devices), int(num_rsu)
         self.device = torch.device(device)
-        self.actor = HybridActor(state_dim, self.N, self.M, ap_prior=ap_prior).to(self.device)
+        if actor_factory is None:
+            self.actor = HybridActor(state_dim, self.N, self.M, ap_prior=ap_prior).to(self.device)
+        else:  # e.g. the split service-flow policy network used by SFR-SAC
+            self.actor = actor_factory(state_dim, self.N, self.M, ap_prior=ap_prior).to(self.device)
         self.vf = ValueNet(state_dim).to(self.device)
         self.vc = ValueNet(state_dim).to(self.device)
         self.vf_opt = torch.optim.Adam(self.vf.parameters(), lr=vf_lr)
@@ -114,6 +117,9 @@ class CPOAgent:
         self.backtrack_iters, self.backtrack_coeff = backtrack_iters, backtrack_coeff
         self.vf_iters, self.vf_batch = vf_iters, vf_batch
         self.steps_per_update = int(steps_per_update)
+        if not 0.0 < float(fisher_fraction) <= 1.0:
+            raise ValueError("fisher_fraction must be in (0, 1]")
+        self.fisher_fraction = float(fisher_fraction)
         self.lambda_val = 0.0  # reported as the constraint multiplier nu*
         self.alpha = 0.0
         self.buf = []
@@ -186,7 +192,10 @@ class CPOAgent:
         adv_r, ret_r = self._gae(rew, v, done, self.gamma, self.lam)
         adv_c, ret_c = self._gae(cost, vc, done, self.cgamma, self.clam)
         adv_r = (adv_r - adv_r.mean()) / (adv_r.std() + EPS)
-        adv_c = (1.0 - self.cgamma) * (adv_c - adv_c.mean())
+        # J_c below is the per-step average cost. By the policy-gradient theorem its gradient is
+        # E[ratio * A_c] with the (discounted) advantage itself, so A_c is not rescaled by (1 - gamma_c);
+        # rescaling would shrink the constraint gradient 100x at gamma_c = 0.99 (no effect at gamma_c = 0).
+        adv_c = adv_c - adv_c.mean()
         Ar = torch.as_tensor(adv_r, device=self.device)
         Ac = torch.as_tensor(adv_c, device=self.device)
         with torch.no_grad():
@@ -204,8 +213,16 @@ class CPOAgent:
         g = flat_grad(lr_, self.actor, retain_graph=True)
         b = flat_grad(lc_, self.actor)
 
+        # Optional Fisher subsampling (as in common TRPO implementations): the curvature is estimated on
+        # a random fraction of the batch; gradients, KL checks and the line search use the full batch.
+        if self.fisher_fraction < 1.0:
+            keep = torch.randperm(len(S), device=S.device)[:max(1, int(self.fisher_fraction * len(S)))]
+            S_f, old_f = S[keep], tuple(t[keep] for t in old)
+        else:
+            S_f, old_f = S, old
+
         def Hvp(vec):
-            kl = self._kl(S, old)
+            kl = self._kl(S_f, old_f)
             gk = flat_grad(kl, self.actor, create_graph=True)
             return flat_grad(torch.dot(gk, vec), self.actor) + self.damping * vec
 

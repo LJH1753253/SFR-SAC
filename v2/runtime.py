@@ -127,13 +127,21 @@ def training_reward(cfg, name, reward, cost):
     return reward_scale(cfg, name) * value
 
 
+def assumed_parameters(settings, env):
+    """Physical constants given to structured actors/critics. They equal the simulator's unless a
+    model-mismatch study overrides some of them (`model_assumptions`)."""
+    params = dict(env.params)
+    params.update(settings.get("model_assumptions") or {})
+    return params
+
+
 def policy_factory(settings, env):
     architecture = settings.get("actor_architecture", "mlp")
     if architecture == "mlp":
         return None
     from agents.structured_actor import PhysicalFeatureMLPActor, ServiceFlowActor
     if architecture == "feature_mlp":
-        return partial(PhysicalFeatureMLPActor, parameters=env.params)
+        return partial(PhysicalFeatureMLPActor, parameters=assumed_parameters(settings, env))
     if architecture not in {"service_flow", "split_service_flow"}:
         raise ValueError("Unknown actor_architecture")
     factory, extra = ServiceFlowActor, {}
@@ -141,7 +149,9 @@ def policy_factory(settings, env):
         from agents.cloud_actor import SplitServiceFlowActor
         factory = SplitServiceFlowActor
         extra["ap_residual_bound"] = settings.get("ap_residual_bound")
-    return partial(factory, parameters=env.params, **extra,
+        if settings.get("actor_ap_rule", "learned") != "learned":
+            extra["ap_rule"] = settings["actor_ap_rule"]
+    return partial(factory, parameters=assumed_parameters(settings, env), **extra,
                    hidden=int(settings.get("actor_hidden", 64)),
                    embedding_dim=int(settings.get("actor_embedding_dim", 8)),
                    use_physics_features=settings.get("actor_use_physics_features", True),
@@ -172,7 +182,8 @@ def make_agent(cfg, name, env, device="cpu"):
                         target_kl=a["target_kl"], damping=a["damping"], cg_iters=a["cg_iters"],
                         backtrack_iters=a["backtrack_iters"], backtrack_coeff=a["backtrack_coeff"],
                         vf_lr=a["vf_lr"], vf_iters=a["vf_iters"], vf_batch=a["vf_batch"],
-                        steps_per_update=a["steps_per_update"], device=device, ap_prior=ap_prior)
+                        steps_per_update=a["steps_per_update"], device=device, ap_prior=ap_prior,
+                        actor_factory=policy_factory(a, env), fisher_fraction=a.get("fisher_fraction", 1.0))
     if name == "td3_lag":
         td3 = TD3Config(lr=a["td3_lr"], tau=a["td3_tau"], policy_noise=a["td3_policy_noise"],
                         exploration_noise=a["td3_exploration_noise"],
@@ -181,7 +192,24 @@ def make_agent(cfg, name, env, device="cpu"):
                         policy_noise_rel_scale=a["td3_policy_noise_rel_scale"],
                         policy_noise_ap_scale=a["td3_policy_noise_ap_scale"])
         td3.gamma = agent_gamma(cfg, name)
-        return TD3Agent(**common, **dual(), cfg=td3, use_lagrangian=True)
+        structured = {}
+        if a.get("critic_architecture", "mlp") == "service_flow":
+            # Same structured reward/cost critics as SFR-SAC (revision fair-critic study).
+            from agents.structured_cost_critic import ServiceFlowCostCritic
+            from agents.structured_energy_critic import ServiceFlowEnergyCritic
+            params = assumed_parameters(a, env)
+            structured.update(
+                critic_factory=partial(ServiceFlowEnergyCritic, num_devices=env.N, num_rsu=env.R, parameters=params,
+                                       hidden=int(a.get("energy_hidden", 64)), reward_scale=reward_scale(cfg, name)),
+                cost_critic_factory=partial(ServiceFlowCostCritic, num_devices=env.N, num_rsu=env.R,
+                                            parameters=params, hidden=int(a.get("cost_delivery_hidden", 64))),
+                energy_component_loss_weight=a.get("energy_component_loss_weight", 1.0),
+                cost_delivery_loss_weight=a.get("cost_delivery_loss_weight", 1.0))
+        elif a.get("critic_architecture", "mlp") != "mlp":
+            raise ValueError("Unknown td3 critic_architecture")
+        if a.get("actor_architecture", "mlp") != "mlp":
+            structured["policy_factory"] = policy_factory(a, env)
+        return TD3Agent(**common, **dual(), cfg=td3, use_lagrangian=True, **structured)
     if name == "lyapunov":
         return B.LyapunovV2(
             env, num_devices=env.N, num_rsu=env.R, tx_power=0.5 * (env.tx_power_min + env.tx_power_max),
@@ -206,7 +234,8 @@ def make_agent(cfg, name, env, device="cpu"):
         if architecture == "service_flow":
             from agents.structured_cost_critic import ServiceFlowCostCritic
             cost_factory = partial(ServiceFlowCostCritic, num_devices=env.N, num_rsu=env.R,
-                                   parameters=env.params, hidden=int(a.get("cost_delivery_hidden", 64)))
+                                   parameters=assumed_parameters(a, env),
+                                   hidden=int(a.get("cost_delivery_hidden", 64)))
         reward_architecture = a.get("reward_critic_architecture", "mlp")
         if reward_architecture not in {"mlp", "service_flow"}:
             raise ValueError("Unknown reward_critic_architecture")
@@ -214,7 +243,8 @@ def make_agent(cfg, name, env, device="cpu"):
         if reward_architecture == "service_flow":
             from agents.structured_energy_critic import ServiceFlowEnergyCritic
             reward_factory = partial(ServiceFlowEnergyCritic, num_devices=env.N, num_rsu=env.R,
-                                     parameters=env.params, hidden=int(a.get("energy_hidden", 64)),
+                                     parameters=assumed_parameters(a, env),
+                                     hidden=int(a.get("energy_hidden", 64)),
                                      reward_scale=reward_scale(cfg, name))
         actor_factory = policy_factory(a, env)
         agent = SafeSACAgent(**common, **sac, **dual(), lr=a["safe_lr"], tau=a["safe_tau"],
@@ -262,9 +292,9 @@ def save_agent(path, agent, cfg, name, n, seed):
     atomic_save(Path(path).with_name("actor.pt"), {**payload, "modules": {"actor": mods["actor"]}})
 
 
-def load_agent(path, cfg, device="cpu"):
+def load_agent(path, cfg, device="cpu", check_source=True):
     ck = torch.load(path, map_location=device, weights_only=True)
-    if ck.get("source_digest") != source_digest() or ck["config_hash"] != fingerprint(cfg):
+    if ck["config_hash"] != fingerprint(cfg) or (check_source and ck.get("source_digest") != source_digest()):
         raise ValueError("Model source/configuration mismatch")
     env = make_env(cfg, ck["N"], ck["seed"])
     agent = make_agent(cfg, ck["agent"], env, device)
@@ -272,7 +302,7 @@ def load_agent(path, cfg, device="cpu"):
         getattr(agent, k).load_state_dict(sd)
     for key, value in ck.get("scalars", {}).items():
         setattr(agent, key, value)
-    if hasattr(agent, "lam"):
+    if torch.is_tensor(getattr(agent, "lam", None)):  # SAC dual variable (CPO's `lam` is its GAE lambda)
         agent.lam.fill_(agent.lambda_val)
     return agent, ck["agent"], ck["N"], ck["seed"]
 
@@ -560,16 +590,20 @@ def run_learner(cfg, name, n, seed, out, device="cpu", resume=True, stop_after=N
     if str(device).startswith("cuda"):
         summary["gpu_name"] = torch.cuda.get_device_name()
         summary["peak_gpu_memory_MB"] = torch.cuda.max_memory_allocated() / 1024**2
+    # TD3 names its critics q1/q2/qc1/qc2; SAC uses critic_1/critic_2/cost_critic_1/cost_critic_2.
+    reward_critics = (getattr(agent, "critic_1", None) or getattr(agent, "q1", None),
+                      getattr(agent, "critic_2", None) or getattr(agent, "q2", None))
+    cost_critic = getattr(agent, "cost_critic_1", None) or getattr(agent, "qc1", None)
     if getattr(agent, "structured_energy_enabled", False):
         summary["energy_hidden"] = cfg["algorithms"][name].get("energy_hidden", 64)
         summary["energy_component_loss_weight"] = agent.energy_component_loss_weight
-        summary["parameters_per_reward_critic"] = sum(p.numel() for p in agent.critic_1.parameters())
-        summary["learned_energy_factor_1"] = agent.critic_1.log_energy_factor.detach().clamp(-2.0, 2.0).exp().cpu().tolist()
-        summary["learned_energy_factor_2"] = agent.critic_2.log_energy_factor.detach().clamp(-2.0, 2.0).exp().cpu().tolist()
+        summary["parameters_per_reward_critic"] = sum(p.numel() for p in reward_critics[0].parameters())
+        summary["learned_energy_factor_1"] = reward_critics[0].log_energy_factor.detach().clamp(-2.0, 2.0).exp().cpu().tolist()
+        summary["learned_energy_factor_2"] = reward_critics[1].log_energy_factor.detach().clamp(-2.0, 2.0).exp().cpu().tolist()
     if getattr(agent, "structured_cost_enabled", False) or getattr(agent, "structured_energy_enabled", False):
         summary["cost_delivery_hidden"] = cfg["algorithms"][name].get("cost_delivery_hidden", 64)
         summary["cost_delivery_loss_weight"] = agent.cost_delivery_loss_weight
-        summary["parameters_per_cost_critic"] = sum(p.numel() for p in agent.cost_critic_1.parameters())
+        summary["parameters_per_cost_critic"] = sum(p.numel() for p in cost_critic.parameters())
     return summary
 
 

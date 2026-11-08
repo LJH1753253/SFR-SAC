@@ -21,6 +21,8 @@ def main() -> None:
     parser.add_argument("--episodes", type=int, default=100)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--output", type=Path, default=Path("runs/example_evaluation"))
+    parser.add_argument("--allow-source-mismatch", action="store_true",
+                        help="load a checkpoint saved by a different source version (the configuration must match)")
     args = parser.parse_args()
     if args.episodes < 1:
         parser.error("episodes must be positive")
@@ -30,7 +32,8 @@ def main() -> None:
         raise FileNotFoundError(f"Expected checkpoint metadata: {job_path}")
     job = json.loads(job_path.read_text(encoding="utf-8"))
     cfg = copy.deepcopy(job["config"])
-    agent, method, n, seed = load_agent(args.model, cfg, device=args.device)
+    agent, method, n, seed = load_agent(args.model, cfg, device=args.device,
+                                        check_source=not args.allow_source_mismatch)
     cfg["training"]["eval_episodes"] = args.episodes
     args.output.mkdir(parents=True, exist_ok=True)
     summary = evaluate_agent(cfg, method, agent, n, seed, args.episodes, details_dir=args.output)
