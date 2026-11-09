@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Decision latency on Intel(R) Xeon(R) Platinum 8358P CPU @ 2.60GHz, one thread.}
+\label{tab:rev_latency}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccccc}
+\hline
+Policy & N & Weights & Actor parameters & Median (ms) & P95 (ms) & P99 (ms) \\
+\hline
+sfr & 50 & initialized & 51878 & 1.211 & 1.230 & 1.239 \\
+sfr & 70 & initialized & 52198 & 1.223 & 1.278 & 1.285 \\
+sfr & 200 & initialized & 54278 & 1.538 & 1.558 & 1.566 \\
+td3 & 50 & initialized & 300433 & 0.247 & 0.254 & 0.255 \\
+td3 & 70 & initialized & 392753 & 0.266 & 0.273 & 0.274 \\
+td3 & 200 & initialized & 992833 & 0.399 & 0.405 & 0.406 \\
+sfr & 70 & trained & 52198 & 1.231 & 1.285 & 1.293 \\
+\hline
+\end{tabular}
+\end{table}

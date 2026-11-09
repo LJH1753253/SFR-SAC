@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\caption{Mechanism architecture ablation at N=70.}
+\label{tab:mechanism}
+\begin{tabular}{llll}
+\toprule
+Variant & Cost (\%) & BFSR (\%) & Energy (mJ/device/slot) \\
+\midrule
+shared_mlp & 9.82 $\pm$ 0.63 & 59.47 $\pm$ 17.80 & 10.08 $\pm$ 0.59 \\
+shared_structured & 8.91 $\pm$ 0.56 & 89.14 $\pm$ 6.12 & 11.89 $\pm$ 3.18 \\
+split_mlp & 11.45 $\pm$ 1.52 & 28.64 $\pm$ 20.17 & 10.24 $\pm$ 0.63 \\
+split_structured & 9.38 $\pm$ 0.16 & 96.05 $\pm$ 2.37 & 8.59 $\pm$ 0.33 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,57 @@
+{
+  "status": "canonical_paper_results",
+  "purpose": "Machine-readable mapping from final Paper1 tables/figures to frozen source data.",
+  "main_results": {
+    "source": "results/final/tables/main_results.csv",
+    "supporting_source": "results/final/data/evidence5_summary.csv",
+    "scope": "N=50,55,60,65,70; SFR-SAC, Penalty SAC, Safe TD3, Lyapunov-inspired rule, Vanilla SAC",
+    "completed_pairs": 5,
+    "units": {"cost": "percent", "energy": "mJ/device/slot", "bfsr": "percent"},
+    "source_digest_note": "The aggregate main table is retained as the confirmed formal main-study export; detailed per-seed main raw files are not present in the current GitHub checkout."
+  },
+  "fair_critics": {
+    "source": "results/revision_20261108/container_20261109/tables/fair_critics_container.csv",
+    "per_seed_source": "results/revision_20261108/container_20261109/tables/fair_critics_container_per_seed.csv",
+    "provenance": "results/revision_20261108/container_20261109/data/container_fair_per_slot_provenance.json",
+    "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+    "protocol_hash": "25c98d2abc8b0e88",
+    "completed_test_cases": 35,
+    "completed_parent_trainings": 35,
+    "pairs": 5,
+    "notes": "The latest container rerun is canonical. The fixed-penalty rows use three pairs, as recorded in the source table."
+  },
+  "per_slot": {
+    "source": "results/revision_20261108/container_20261109/tables/per_slot_container.csv",
+    "per_seed_source": "results/revision_20261108/container_20261109/tables/per_slot_container_per_seed.csv",
+    "provenance": "results/revision_20261108/container_20261109/data/container_fair_per_slot_provenance.json",
+    "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+    "protocol_hash": "25c98d2abc8b0e88",
+    "completed_test_cases": 20,
+    "pairs": 5,
+    "notes": "The latest container rerun reuses the current container SFR-SAC parent models. The older local Per-slot archive is historical and excluded."
+  },
+  "revision_controls": {
+    "source_root": "results/revision_20261108/tables",
+    "provenance": "results/revision_20261108/data/provenance.json",
+    "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+    "protocol_hash": "25c98d2abc8b0e88",
+    "stages": {
+      "ap": "results/revision_20261108/tables/ap.csv",
+      "cpo": "results/revision_20261108/tables/cpo.csv",
+      "horizon": "results/revision_20261108/tables/horizon.csv",
+      "latency": "results/revision_20261108/tables/latency.csv",
+      "mismatch": "results/revision_20261108/tables/mismatch.csv",
+      "penalty_form": "results/revision_20261108/tables/penalty_form.csv"
+    },
+    "notes": "These stages retain their recorded pair counts and are not silently expanded to five pairs."
+  },
+  "historical_excluded": {
+    "local_per_slot": "results/revision_20261108/tables/per_slot.csv",
+    "reason": "Historical independent run with a different source/checkpoint provenance; retained for traceability but excluded from canonical paper results."
+  },
+  "figure_script": "scripts/plot_paper_results.py",
+  "validator": "scripts/validate_paper_results.py"
+}

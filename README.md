@@ -1,30 +1,38 @@
 # SFR-SAC
 
-Service-Failure-Regulated Soft Actor-Critic for energy-efficient task
-offloading in heterogeneous IIoT-MEC systems.
+Service-Failure-Regulated Soft Actor-Critic for energy-efficient task offloading in heterogeneous IIoT-MEC systems.
 
-This repository contains the final v2 implementation used for the Evidence5
-study. The proposed policy is internally retained under the compatibility
-identifier `safe` and the selected configuration is `split_exact`; the paper
-name for that policy is **SFR-SAC**. The implementation uses a split service-
-flow actor, structured reward/cost critics, hybrid continuous--categorical
-actions, and straight-through AP execution.
+## Research Problem
 
-The controller uses the immediate slot service-failure cost with `gamma=0`.
+The project studies joint task offloading, transmit-power control, and AP association under an aggregate service-failure budget. Workloads are completed within each service slot. Unfinished local-computing, edge-delivery, and MEC-service workload contributes to the service-failure cost.
 
-## Quick Start
+## Method
 
-Python 3.10+ and PyTorch are required. Install a CUDA-enabled PyTorch build if
-GPU training is desired.
+SFR-SAC uses a split service-flow actor, structured reward and cost critics, continuous offloading/power actions, and a categorical AP-association branch with straight-through execution. The physical energy model uses CPU-cycle local energy and PA/circuit uplink energy. The default implementation predicts immediate slot outcomes with `gamma=0`; the repository does not claim a hard long-horizon safety guarantee.
+
+## Final Results
+
+The canonical Paper1 results are under [`results/paper/`](results/paper/):
+
+- [`REPORT.md`](results/paper/REPORT.md): complete experimental report;
+- [`PROVENANCE.md`](results/paper/PROVENANCE.md): source and protocol mapping;
+- [`data_sources.json`](results/paper/data_sources.json): machine-readable table/figure sources;
+- [`figures/`](results/paper/figures/): final PDF and PNG figures;
+- [`tables/`](results/paper/tables/): canonical CSV and LaTeX tables;
+- [`per_seed/`](results/paper/per_seed/): paired per-seed evidence.
+
+At `N=70`, the canonical container results report SFR-SAC at `9.38 +/- 0.16%` service-failure cost, `8.59 +/- 0.36 mJ/device/slot`, and `96.23 +/- 2.31%` BFSR. The Per-slot Actor result is `9.38 +/- 0.16%`, `8.59 +/- 0.38 mJ/device/slot`, `96.37 +/- 2.12%` BFSR, and `1.750 +/- 0.013 ms` median decision time.
+
+## Reproduction
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pytest -q tests
+python scripts/plot_paper_results.py
+python scripts/validate_paper_results.py
 ```
 
-Run a short standalone CPU check with real gradient updates:
+For a short CPU smoke run:
 
 ```bash
 python scripts/train_one.py --method sfr_sac --N 6 --seed 0 \
@@ -32,99 +40,38 @@ python scripts/train_one.py --method sfr_sac --N 6 --seed 0 \
   --output runs/smoke_sfr_sac
 ```
 
-Evaluate the shipped N=70 example model:
+The multi-GPU training and revision runners remain available for reproducing the recorded protocols:
 
 ```bash
-python scripts/evaluate_model.py --episodes 100 --device cpu \
-  --output runs/example_evaluation
-```
-
-The example checkpoint is a final N=70, seed-0 SFR-SAC model. Its metadata and
-configuration are stored beside `model.pt`.
-
-## Experiment Suite
-
-The reproducible multi-GPU runner is retained in `run_original.sh`. It uses
-the physical v2 environment, five paired deployments for the main comparison,
-and resume-safe per-run outputs.
-
-```bash
-# Linux or WSL
-export PYTHON=python
 bash run_original.sh smoke
-bash run_original.sh dry-run
-bash run_original.sh start --hours 24 --workers 2 --gpus 0
+bash run_revision.sh smoke
 ```
 
-For a full two-GPU run on a server:
+The full result package does not include large checkpoints or replay buffers. Historical run directories remain in the repository history and under `results/revision_20261108/` for provenance; they are not the primary reader entry point.
 
-```bash
-bash run_original.sh start --hours 46 --workers 8 --gpus 0,1
-bash run_original.sh status
-tail -n 50 outputs/original_ch5/nohup.log
-```
+## Limitations
 
-Use `bash run_original.sh stop` for a graceful stop and repeat the same start
-command to resume completed and interrupted runs. The controller keeps each
-run's configuration, status, log, model, evaluation summary, and checkpoint
-separate. Do not overwrite an existing output directory with a different
-configuration.
-
-The main grid is `N={50,55,60,65,70}` with paired seeds/layouts. The reported
-ablations cover the service-failure budget, service-window fraction, dual
-update granularity, fixed penalty, and MEC background load. The exact values
-are in `configs/base.json` and the stage manifests produced by the runner.
-
-## Final Results
-
-The final five-pair results are included under `results/final/`:
-
-- `figures/`: publication-ready PDF figures;
-- `tables/`: matching CSV and LaTeX tables;
-- `data/evidence5_summary.csv`: means and sample standard deviations;
-- `data/paired_comparisons.csv`: paired deltas and nominal intervals;
-- `data/comparison_locked.json`: validation-only primary-policy selection;
-- `data/evidence5_REPORT.md`: complete experiment report.
-
-Energy is reported as mJ/device/slot. Cost, BFSR, and failure components are
-reported as percentages. The shipped figures use the terminology
-local-computing failure, edge-delivery failure, and MEC-service failure.
-
-## Revision Evidence (2026-11)
-
-The completed IoT-J revision evidence is archived under
-`results/revision_20261108/`. The primary-evidence summary is
-`results/revision_20261108/STRONG_EVIDENCE_SUMMARY.md`; complete stage reports
-and matching CSV/LaTeX tables are retained beside it. The revision runner and
-protocol are included in `revision/`, `run_revision.sh`, and
-`run_remaining.sh`.
-
-The recovered per-slot optimization evidence is archived in
-`results/revision_20261108/tables/per_slot.csv` and
-`results/revision_20261108/data/per_slot_report.md`, with per-seed raw summaries
-and provenance under `results/revision_20261108/data/per_slot_runs/`.
-
-The current container rerun of Fair Critics and Per-slot is archived under
-`results/revision_20261108/container_20261109/`; its source and revision
-digests are recorded in the accompanying provenance file.
-
-Generate the primary revision figures with:
-
-```bash
-python scripts/plot_revision_evidence.py
-```
+- Aggregate cost and BFSR do not guarantee per-device reliability.
+- The AP-independent ablation becomes degenerate when all candidate AP gains are symmetric.
+- Numerical and model-based baselines may use simulator information unavailable to the learned actor.
+- Reported decision latency excludes state acquisition, signaling, and actuation.
+- Some revision controls use three paired deployments; the canonical Fair-Critics and Per-slot container rerun uses five pairs.
 
 ## Repository Layout
 
 ```text
 agents/             actor, critics, action projection, and baselines
 envs/               one-slot heterogeneous IIoT-MEC environment
-v2/                 training/evaluation runtime and physical environment
-configs/            reproducible experiment configuration
-original_ch5/       resume-safe main/ablation controller
-scripts/            one-run training and checkpoint evaluation entry points
-models/             small example checkpoint and provenance metadata
-results/final/      final PDFs, CSV summaries, and report
+v2/                 physical environment and training/evaluation runtime
+configs/            reproducible configurations
+revision/           revision-study runners and stage definitions
+scripts/            training, evaluation, validation, and plotting tools
+results/paper/      canonical Paper1 figures, tables, report, and provenance
+results/final/      original formal main-study export
+results/revision_20261108/  revision-stage source archives
 tests/              smoke and protocol tests
 ```
 
+## Citation
+
+Citation information will be added after publication. No DOI, volume, issue, or acceptance status is claimed in this repository.
