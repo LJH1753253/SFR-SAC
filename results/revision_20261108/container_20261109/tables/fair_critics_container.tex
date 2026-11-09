@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\caption{Container Fair-Critics results at $N=70$.}
+\label{tab:container_fair_critics}
+\footnotesize
+\begin{tabular}{lcccc}
+\hline
+Variant & Pairs & Cost (\%) & Energy (mJ/device/slot) & BFSR (\%) \\
+\hline
+SFR-SAC & 5 & 9.38 $\pm$ 0.16 & 8.59 $\pm$ 0.36 & 96.23 $\pm$ 2.31 \\
+Safe TD3 & 5 & 9.28 $\pm$ 0.37 & 10.98 $\pm$ 0.51 & 72.78 $\pm$ 9.92 \\
+TD3 + structured critics & 5 & 9.35 $\pm$ 0.08 & 8.88 $\pm$ 0.35 & 76.71 $\pm$ 3.67 \\
+TD3 + structured critics + split actor & 5 & 10.14 $\pm$ 0.56 & 10.57 $\pm$ 2.96 & 56.67 $\pm$ 15.41 \\
+Fixed penalty beta=2 & 3 & 10.35 $\pm$ 3.25 & 8.99 $\pm$ 0.42 & 52.74 $\pm$ 41.28 \\
+Fixed penalty beta=2.5 & 3 & 5.14 $\pm$ 0.45 & 10.24 $\pm$ 0.52 & 99.37 $\pm$ 0.42 \\
+Fixed penalty beta=3 & 3 & 5.57 $\pm$ 2.75 & 11.65 $\pm$ 1.52 & 92.06 $\pm$ 13.65 \\
+Fixed penalty beta=3.5 & 3 & 3.59 $\pm$ 0.54 & 10.89 $\pm$ 0.62 & 99.96 $\pm$ 0.04 \\
+Fixed penalty beta=4.5 & 3 & 3.44 $\pm$ 0.47 & 11.16 $\pm$ 0.59 & 99.98 $\pm$ 0.03 \\
+\hline
+\end{tabular}
+\end{table}

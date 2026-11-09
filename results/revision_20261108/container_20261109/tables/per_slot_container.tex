@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Container Per-slot results at $N=70$.}
+\label{tab:container_per_slot}
+\footnotesize
+\begin{tabular}{lccccc}
+\hline
+Method & Cost (\%) & Energy (mJ/device/slot) & BFSR (\%) & Median (ms) & P95 (ms) \\
+\hline
+Actor & 9.38 $\pm$ 0.16 & 8.59 $\pm$ 0.38 & 96.37 $\pm$ 2.12 & 1.750 $\pm$ 0.013 & 1.924 $\pm$ 0.006 \\
+Critic refine & 9.79 $\pm$ 0.04 & 8.36 $\pm$ 0.39 & 84.65 $\pm$ 2.26 & 246.295 $\pm$ 0.993 & 247.706 $\pm$ 0.998 \\
+Critic scratch & 9.86 $\pm$ 0.04 & 8.53 $\pm$ 0.35 & 74.26 $\pm$ 4.91 & 1172.968 $\pm$ 1.245 & 1197.667 $\pm$ 3.036 \\
+Numerical optimizer & 10.00 $\pm$ 0.00 & 7.71 $\pm$ 0.33 & 53.22 $\pm$ 0.87 & 130.488 $\pm$ 1.318 & 131.427 $\pm$ 1.337 \\
+\hline
+\end{tabular}
+\end{table}

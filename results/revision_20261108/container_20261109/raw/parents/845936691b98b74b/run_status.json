@@ -1,0 +1,14 @@
+{
+  "status": "done",
+  "start_time": "2026-11-08 19:30:32 +0000",
+  "end_time": "2026-11-08 20:41:36 +0000",
+  "command": [
+    "/public/home/hnust19209626205/iotj_cloud24_20261018/.venv/bin/python",
+    "-m",
+    "cloud24.worker",
+    "/public/home/hnust19209626205/iotj_fair_per_slot_20261109/outputs/fair_per_slot_20261109/runs/N70/layout1003/train3/845936691b98b74b/task.json"
+  ],
+  "pid": 27317,
+  "cuda_visible_devices": "0",
+  "error": null
+}

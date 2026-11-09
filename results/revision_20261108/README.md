@@ -14,6 +14,8 @@ This directory archives the completed revision experiments for the SFR-SAC Paper
 
 The per-slot archive is reconstructed from the completed historical overnight run. Its source digest and hardware are recorded separately in `data/per_slot_provenance.json`; it must not be treated as using the same checkpoints as the later container Fair-Critics runs.
 
+The container rerun is archived separately under `container_20261109/`. It contains the current container source/revision digests, 35 Fair-Critics test cases, 20 Per-slot test cases, selected raw summaries, and the regenerated CSV/LaTeX tables. It supersedes the historical local run for cross-stage comparisons, but the two archives are not pooled because their source/checkpoint identities differ.
+
 The primary narrative selects experiments by their direct relevance to the paper questions. The complete stage tables remain archived and are not replaced by the short summary.
 
 ## Reproducibility

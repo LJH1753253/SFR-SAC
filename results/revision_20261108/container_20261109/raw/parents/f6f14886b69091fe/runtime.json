@@ -1,0 +1,11 @@
+{
+  "python": "3.11.10 | packaged by conda-forge | (main, Oct 16 2024, 01:27:36) [GCC 13.3.0]",
+  "torch": "2.5.1+cu121",
+  "numpy": "2.0.2",
+  "platform": "Linux-4.18.0-305.3.1.el8.x86_64-x86_64-with-glibc2.35",
+  "cpu": "x86_64",
+  "device": "cuda",
+  "configured_torch_threads": 1,
+  "cuda_version": "12.1",
+  "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777"
+}

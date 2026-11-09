@@ -1,0 +1,803 @@
+{
+  "archive_created": "2026-11-09T19:20:26.932728+08:00",
+  "repository_commit_at_archive": "3c7b931b5bbbf8ceb39fc214d5291b19775cb673",
+  "source_directory_in_container": "/public/home/hnust19209626205/iotj_fair_per_slot_20261109/outputs/fair_per_slot_20261109",
+  "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+  "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+  "protocol_hash": "25c98d2abc8b0e88",
+  "protocol": {
+    "version": 1,
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+    "stages": [
+      "fair_critics",
+      "per_slot",
+      "mismatch",
+      "cpo",
+      "horizon",
+      "penalty_form",
+      "ap",
+      "latency"
+    ],
+    "pairs5": [
+      [
+        1000,
+        0
+      ],
+      [
+        1001,
+        1
+      ],
+      [
+        1002,
+        2
+      ],
+      [
+        1003,
+        3
+      ],
+      [
+        1004,
+        4
+      ]
+    ],
+    "pairs3": [
+      [
+        1000,
+        0
+      ],
+      [
+        1001,
+        1
+      ],
+      [
+        1002,
+        2
+      ]
+    ],
+    "test_stream": "2900000 + 100*N + layout_seed - 1000",
+    "test_episodes": 100,
+    "per_slot_episodes": 30,
+    "per_slot_warmup_episodes": 10,
+    "per_slot_iterations": {
+      "critic_refine": 30,
+      "critic_scratch": 150,
+      "oracle": 100
+    },
+    "penalty_betas": [
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.5
+    ],
+    "mismatch": {
+      "mec_capacity": {
+        "environment": {
+          "bs_cpu_base": 64000000000.0
+        },
+        "assumptions": {
+          "bs_cpu_base": 80000000000.0
+        }
+      },
+      "pa_efficiency": {
+        "environment": {
+          "tx_pa_efficiency": 0.25
+        },
+        "assumptions": {
+          "tx_pa_efficiency": 0.35
+        }
+      },
+      "cycles": {
+        "environment": {
+          "cycles_per_bit": 3600.0
+        },
+        "assumptions": {
+          "cycles_per_bit": 3000.0
+        }
+      },
+      "mec_sharing": {
+        "environment": {
+          "mec_sharing": "max_min_fair"
+        },
+        "assumptions": {}
+      }
+    },
+    "latency_sizes": [
+      50,
+      70,
+      200
+    ],
+    "quick": false,
+    "notes": {
+      "fair_critics": "Safe TD3 and a fixed-penalty SAC receive SFR-SAC's structured critics (and, for td3_struct_split, its split actor network), isolating the critic structure from the constrained-RL algorithm.",
+      "per_slot": "Direct per-slot optimization of the trained critics' objective and a full-information oracle; tests whether the actor is needed beyond amortization (latency).",
+      "mismatch": "The true environment differs from the physical constants given to SFR-SAC's structured networks; model-free Safe TD3 and full-information MB-greedy are trained/tuned in the same perturbed environment.",
+      "horizon": "E1: gamma 0 vs 0.99 for learners with generic (MLP) critics; both arms use sampled AP entropy because the exact entropy controls require gamma 0. CPO arms are in stage cpo.",
+      "cpo": "E7: CPO with the split service-flow actor, gamma 0 and gamma 0.99, main grid N and pairs.",
+      "penalty_form": "E2: hinge vs untruncated Lagrangian actor penalty for SFR-SAC at d = 8, 10, 12 %.",
+      "ap": "E3: learned AP vs best-channel AP, and AP-dependent vs AP-independent gains.",
+      "latency": "E6: one CPU thread; initialized networks for N = 50, 70, 200 plus the trained N = 70 actor."
+    }
+  },
+  "suite_status": {
+    "created": "2026-11-08 17:43:31 +0000",
+    "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+    "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+    "protocol_hash": "25c98d2abc8b0e88",
+    "quick": false,
+    "deadline_unix": 1794271411.59253,
+    "stage": "per_slot",
+    "completed": 25,
+    "planned": 25,
+    "failed": {},
+    "updated": "2026-11-09 03:59:16 +0000",
+    "pid": 30552,
+    "active": [],
+    "status": "finished"
+  },
+  "selected_stage_cases": {
+    "fair_critics": 35,
+    "per_slot": 20
+  },
+  "parent_trainings": 35,
+  "parent_records": [
+    {
+      "id": "0b434b7d912ce687",
+      "variant": "td3",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "0b434b7d912ce687",
+      "artifacts": {
+        "final_eval_summary.json": "6cdbfb51468a8051237348882197fef4ec947482805a6b387a4ddaa75b87042e",
+        "job.json": "d414d5b8b2b520d9f13dce3897a8054121675c013f70e6ea493232db2b4d7221",
+        "task.json": "d414d5b8b2b520d9f13dce3897a8054121675c013f70e6ea493232db2b4d7221",
+        "run_status.json": "94892c49187042aae029b96f2982dea099913489a4a8f74a9d81c7cfdb88ef77",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "59e862bd3959eb1dfaa265ee9911729b73fd9e774690f81e4a2d98a5f1e54977",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "0fbc9dc600b202d7",
+      "variant": "pen_struct_b3.5",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "0fbc9dc600b202d7",
+      "artifacts": {
+        "final_eval_summary.json": "e4d32dc98b3ac88081b07236b63f046807ffc2a75e13db09898b9520134b87c5",
+        "job.json": "bb6d44b6bb5671f2198c6c69196d28681baa1c115e84f94a3819de1075851cff",
+        "task.json": "bb6d44b6bb5671f2198c6c69196d28681baa1c115e84f94a3819de1075851cff",
+        "run_status.json": "1c99088c938ae149784e54640d6763a742d23d4ecd9478d6992bdcdb13d8485c",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "e6fc0d82b3bce6709019f613f70d64c0347241d14ad456f51b29e9ee83b08c47",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "117cc5a9811ff9a5",
+      "variant": "pen_struct_b4.5",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "117cc5a9811ff9a5",
+      "artifacts": {
+        "final_eval_summary.json": "b59ec1a20e4072a395e53e7fcaddabb2b58376474b86fb5b5f999342ce08bff8",
+        "job.json": "34641fa1445df79d5d6ee0f5a3564f05f8cf4c854aa93b487dad7c5cee32d016",
+        "task.json": "34641fa1445df79d5d6ee0f5a3564f05f8cf4c854aa93b487dad7c5cee32d016",
+        "run_status.json": "cb2bc9d352424a40fd49b9c38428c7b372eb8dab2f83aec8d0df94e21fbdcce6",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "897ca4280505c341fdc303548a5a16317246c6adca2c61c9bf81c3ceeeff4ac1",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "19881150917c7dba",
+      "variant": "td3_struct",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "19881150917c7dba",
+      "artifacts": {
+        "final_eval_summary.json": "7d6653f7c6c049d46d26f80a2c2e3dc05dba2ef3242a7c7756dfdf0087d35342",
+        "job.json": "82238f3c347035e614b57af3ada548fa64ea981ef2d58e025b59be180f9afd1e",
+        "task.json": "82238f3c347035e614b57af3ada548fa64ea981ef2d58e025b59be180f9afd1e",
+        "run_status.json": "a1d62df0dd74b2e374383f207b19ccceefd448dba90d014e03b016d621076d81",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "3d7b9d7c827e0e9f53e6e91cdd6d6e6fc3565e586f78bf6865de29f348de0205",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "24b8bc3f4b1adf2f",
+      "variant": "sfr",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "24b8bc3f4b1adf2f",
+      "artifacts": {
+        "final_eval_summary.json": "cfaef0059665d0f0e4c0d63b1602a73461cc3075aad2b6115cee08a935417385",
+        "job.json": "6723b631f1cde66347a38a15ccb475d6dce387645e3775a787d5f1dc6993e224",
+        "task.json": "6723b631f1cde66347a38a15ccb475d6dce387645e3775a787d5f1dc6993e224",
+        "run_status.json": "676aae0c7f698c49634d46282b932ea0860ac7a49dd9ce2f0672726d67ddaf29",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "897ca4280505c341fdc303548a5a16317246c6adca2c61c9bf81c3ceeeff4ac1",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "30281a05590f7cce",
+      "variant": "pen_struct_b3.5",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "30281a05590f7cce",
+      "artifacts": {
+        "final_eval_summary.json": "a6cc369bc35849b07b4c44a42390c8bb6da498d9eb314cfc96d99c3ab23e6df2",
+        "job.json": "06dd8352dd3b8dc199f6e02af5087b9080a8f09b74de713c13da227361e3e5f1",
+        "task.json": "06dd8352dd3b8dc199f6e02af5087b9080a8f09b74de713c13da227361e3e5f1",
+        "run_status.json": "b8883abf1cd39d43ed3ced93a9bfc91a77c7a6d7a9982d351b434e67dd974e52",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "4e3f627b33bb66b38c9a35d36524aa05c5b6475865a170f7417f446ee819d29e",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "33fb1923a5e5028d",
+      "variant": "td3_struct_split",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "33fb1923a5e5028d",
+      "artifacts": {
+        "final_eval_summary.json": "204b5634cb3c1093d003064262cb47c7b133c0ec1e9679677e64f46e63cbaa97",
+        "job.json": "1281e3389d4e5d9535710ac933b59ad9d489b0ee64b76458c166ebeeecc94e7b",
+        "task.json": "1281e3389d4e5d9535710ac933b59ad9d489b0ee64b76458c166ebeeecc94e7b",
+        "run_status.json": "69a34c9d4c85bd2cdc4eaec90db4e6f03f8d1f36770925889feff2b6a05fd5c6",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "59e862bd3959eb1dfaa265ee9911729b73fd9e774690f81e4a2d98a5f1e54977",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "3911275e0d2b016b",
+      "variant": "td3",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "3911275e0d2b016b",
+      "artifacts": {
+        "final_eval_summary.json": "3740f7f3e6d9750770b369ec176c9ce6411a1287f6dc135d85c003ea6cc0813f",
+        "job.json": "c39d638f38de084412c6b9259b3ec24b731e7c1c2f6f7d6d5ef4c054f72c200c",
+        "task.json": "c39d638f38de084412c6b9259b3ec24b731e7c1c2f6f7d6d5ef4c054f72c200c",
+        "run_status.json": "7c88e7499b5352b1a5bd656a6b4b6887e909b4ed3c99abc48724274e75e10004",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "cc042fc23920befd7833f2fa951c3e884fbd881c86e2b3908807523af7b90aac",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "42b97c65d42e3c97",
+      "variant": "td3_struct",
+      "seed": 4,
+      "layout_seed": 1004,
+      "config_hash": "42b97c65d42e3c97",
+      "artifacts": {
+        "final_eval_summary.json": "4aad25c38a4a50d2c97adb32809fb58e1ee9560268df40392405d998c49f4bd2",
+        "job.json": "c36a03ebf6c4804bd258fb28f7c720c0a9cadd155a71d38f5ab2c383647c7355",
+        "task.json": "c36a03ebf6c4804bd258fb28f7c720c0a9cadd155a71d38f5ab2c383647c7355",
+        "run_status.json": "e59b36d8f4ce3a701da980fb1ea32ac73f1b203c7c952ba76618f2771e709b23",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "2ef682364488b80b8917aabc8a3b1b54faadd5a74ad5cfdeba80cabb878b9195",
+        "environment.json": "2199d735a3961c276cc68f47e7c37f756c86fc111f2f38719f7bb9256dbf9418",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "53a0b0ca36ed909d",
+      "variant": "sfr",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "53a0b0ca36ed909d",
+      "artifacts": {
+        "final_eval_summary.json": "648da1f1221b189a289ac2299cdbee9b2364019016e1e29a8d865b1c966cd712",
+        "job.json": "999918469e4e209610f317bc51590ef1c7fa2d9cbf646df929c5352dcd81933f",
+        "task.json": "999918469e4e209610f317bc51590ef1c7fa2d9cbf646df929c5352dcd81933f",
+        "run_status.json": "d86e960948142ad9ad73dc60bd998aa80674ad10aeb65806fd68a6cbeb2d0414",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "3d7b9d7c827e0e9f53e6e91cdd6d6e6fc3565e586f78bf6865de29f348de0205",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "53d7053fd4e7c791",
+      "variant": "td3_struct_split",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "53d7053fd4e7c791",
+      "artifacts": {
+        "final_eval_summary.json": "3967548cd66eb5a29a19fe95ef3b4b5663c2a568075fab132772e8481fd17fe4",
+        "job.json": "9e9e22d9be600a9093437716ae40d31466558969943bb52cfbd555eedda4daf5",
+        "task.json": "9e9e22d9be600a9093437716ae40d31466558969943bb52cfbd555eedda4daf5",
+        "run_status.json": "7121a7ef5935a1d023de40272d18b7b1894a46848bc25d2cc3e10f5e562e881b",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "4e3f627b33bb66b38c9a35d36524aa05c5b6475865a170f7417f446ee819d29e",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "559591ce66d2024b",
+      "variant": "td3",
+      "seed": 4,
+      "layout_seed": 1004,
+      "config_hash": "559591ce66d2024b",
+      "artifacts": {
+        "final_eval_summary.json": "6037a9d122d23e90d8b96f5a59584e777438926dc8afad899eb2303a1fdf5fb1",
+        "job.json": "d303e52cf0fa0e351ac040793d86be4064a0694b889e2cf02af4463b665c2522",
+        "task.json": "d303e52cf0fa0e351ac040793d86be4064a0694b889e2cf02af4463b665c2522",
+        "run_status.json": "c7ed36a76155c057c27dd647e398e8a0ffc51f0127d7c7f8032e732e8363003c",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "2ef682364488b80b8917aabc8a3b1b54faadd5a74ad5cfdeba80cabb878b9195",
+        "environment.json": "2199d735a3961c276cc68f47e7c37f756c86fc111f2f38719f7bb9256dbf9418",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "5a24926f2e070984",
+      "variant": "sfr",
+      "seed": 4,
+      "layout_seed": 1004,
+      "config_hash": "5a24926f2e070984",
+      "artifacts": {
+        "final_eval_summary.json": "23cc152321e701b205cf4c9ad34912f596717119e377392bbf565409ef9f1feb",
+        "job.json": "6679f51b62d9aa2148316831cddd8c9bcf8367ce359f2b25313d3e3fd66c87f3",
+        "task.json": "6679f51b62d9aa2148316831cddd8c9bcf8367ce359f2b25313d3e3fd66c87f3",
+        "run_status.json": "a5004af29321502c29c452795aca16fbab2ea47d9f0b7cdeeba1437c99132ed7",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "d102e6753a7c97088d1c334d41e84ea9e1d4c9d861c7114fd24ba0bf8871abfd",
+        "environment.json": "2199d735a3961c276cc68f47e7c37f756c86fc111f2f38719f7bb9256dbf9418",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "62dbe35aab72e4de",
+      "variant": "pen_struct_b3",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "62dbe35aab72e4de",
+      "artifacts": {
+        "final_eval_summary.json": "440fb262126af146c1db9b97eb3d77e055113020dab232e92dcadfaaf31d165f",
+        "job.json": "1380115ef4a60a56688e614c0704f8d75f97d38515f6dbc1ed321f77c2b7d5f6",
+        "task.json": "1380115ef4a60a56688e614c0704f8d75f97d38515f6dbc1ed321f77c2b7d5f6",
+        "run_status.json": "3a2cf5b20e09f56a0d638ec51eb2ca45195c27b6e58c894fc9e43d632b95fe92",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "e6fc0d82b3bce6709019f613f70d64c0347241d14ad456f51b29e9ee83b08c47",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "62e704e74876a3a6",
+      "variant": "pen_struct_b2",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "62e704e74876a3a6",
+      "artifacts": {
+        "final_eval_summary.json": "8e429a3d6214f73e5a46869af1d26a56dda147fb70206165b2fff04085e096c3",
+        "job.json": "ab498963141ba8a7e9157aa3d8535108b595900d087572fff0910fca8309e001",
+        "task.json": "ab498963141ba8a7e9157aa3d8535108b595900d087572fff0910fca8309e001",
+        "run_status.json": "b3eee9c15973255863ba38ed4a9aac8f0f969180b89f4e1e83454dbffcfbb0a5",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "59e862bd3959eb1dfaa265ee9911729b73fd9e774690f81e4a2d98a5f1e54977",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "731b9587d6a1e5cb",
+      "variant": "td3_struct",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "731b9587d6a1e5cb",
+      "artifacts": {
+        "final_eval_summary.json": "c4d9928e2b63cf09e868ec8ef10704c32d95b0673b261f855c3aec315985873c",
+        "job.json": "33b6edc9715d7c34222f93544333d254cf84a78c397356892c6e322abb407b01",
+        "task.json": "33b6edc9715d7c34222f93544333d254cf84a78c397356892c6e322abb407b01",
+        "run_status.json": "caca65b9f7d3ef7c47c2f3b273bf3529c0e43ac0c1e02b55d977600ab6c0b65b",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "897ca4280505c341fdc303548a5a16317246c6adca2c61c9bf81c3ceeeff4ac1",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "77006bc9ad5bc8f0",
+      "variant": "td3_struct_split",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "77006bc9ad5bc8f0",
+      "artifacts": {
+        "final_eval_summary.json": "829f0bd4c98484c9c9982490acb0c138dee66ad6a313f304badc9b4bcfd11d89",
+        "job.json": "c621ec5377fea56d1969cd3f79af55d70d4d2ccd2bfddb8906a0a8e436213929",
+        "task.json": "c621ec5377fea56d1969cd3f79af55d70d4d2ccd2bfddb8906a0a8e436213929",
+        "run_status.json": "dafbcdf18a39cd0a65b0470c3ca88dfd1e1be1c9dbd2b9e855ecd893bf5c47d8",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "cc042fc23920befd7833f2fa951c3e884fbd881c86e2b3908807523af7b90aac",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "823a3352a2125d9a",
+      "variant": "td3_struct",
+      "seed": 3,
+      "layout_seed": 1003,
+      "config_hash": "823a3352a2125d9a",
+      "artifacts": {
+        "final_eval_summary.json": "a0f3e3b8f44c30179c988b7cdb6a07c5b86c4af3edd78b93a6dd96c5fd21e01b",
+        "job.json": "7333c7310db1344de4a3b11ce47201a0fc08b089f898e92a924e1f9c9416e150",
+        "task.json": "7333c7310db1344de4a3b11ce47201a0fc08b089f898e92a924e1f9c9416e150",
+        "run_status.json": "5c43762a8aa51fbdb9e5bedb2308988748d9f4cdebabd17f0537256b977be1f6",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "2151d217c4467e7254f24df8a2bb368b73dc98ea9a4266dedb4191941c86dc5d",
+        "environment.json": "c1acf4a8f208374da7b1d9d2e8646b2a64648a73fd8de13fac6990832d870e68",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "845936691b98b74b",
+      "variant": "sfr",
+      "seed": 3,
+      "layout_seed": 1003,
+      "config_hash": "845936691b98b74b",
+      "artifacts": {
+        "final_eval_summary.json": "8d26430290fc11e6cab8135d1caa1fa8717d15975cc810eb972c6c1123909292",
+        "job.json": "77200890c6bd6fd20b0c283968bfa6456bbf7044909ba5354bb0172c6a48e64d",
+        "task.json": "77200890c6bd6fd20b0c283968bfa6456bbf7044909ba5354bb0172c6a48e64d",
+        "run_status.json": "b663b3e27cadf631ba916bf749da27b1972cc6c82853e29f25ac1fc6624db777",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "2151d217c4467e7254f24df8a2bb368b73dc98ea9a4266dedb4191941c86dc5d",
+        "environment.json": "c1acf4a8f208374da7b1d9d2e8646b2a64648a73fd8de13fac6990832d870e68",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "8bee49fa184f57b7",
+      "variant": "pen_struct_b2.5",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "8bee49fa184f57b7",
+      "artifacts": {
+        "final_eval_summary.json": "fc19508e780b7d22fbf6bf039066357ffc20158ebd0c2426fde98276d343683d",
+        "job.json": "046cbfad7ed244bdd331f5d31f990da0cc891bbb171b3438031d6ec387720539",
+        "task.json": "046cbfad7ed244bdd331f5d31f990da0cc891bbb171b3438031d6ec387720539",
+        "run_status.json": "f17b905dae6b0ef94ec904feb086032d2bfa4748f6a5c7a9e15f34fdec5d2255",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "cc042fc23920befd7833f2fa951c3e884fbd881c86e2b3908807523af7b90aac",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "8eede2f3a9987541",
+      "variant": "pen_struct_b2.5",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "8eede2f3a9987541",
+      "artifacts": {
+        "final_eval_summary.json": "5349be46f558120a56112a7fec842e9d956d476c4d11ee801dffecf9b29a4044",
+        "job.json": "1e1932ebe8d5dadbfb619d6ba8fa049b8ea6adea5543a7cdf68434c7dfc93edf",
+        "task.json": "1e1932ebe8d5dadbfb619d6ba8fa049b8ea6adea5543a7cdf68434c7dfc93edf",
+        "run_status.json": "a67f8f73f7f60676f2522b46b5e4c94b5b31711a0282a3602b55615dee9ad580",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "3d7b9d7c827e0e9f53e6e91cdd6d6e6fc3565e586f78bf6865de29f348de0205",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "955c168ebf3f5da6",
+      "variant": "pen_struct_b4.5",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "955c168ebf3f5da6",
+      "artifacts": {
+        "final_eval_summary.json": "405c3d2d390cd7d28f2e7bc279e8e3d360a5c853b044d1c9a07108830302a030",
+        "job.json": "275e64f26baf0fedc05e946886ed0314aeca6ac56111c0855eb110ef657dc470",
+        "task.json": "275e64f26baf0fedc05e946886ed0314aeca6ac56111c0855eb110ef657dc470",
+        "run_status.json": "40b9d6563ca6e2836d92d0c08cdfec1195717dc2c4a39557429b42d2ddc652f1",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "59e862bd3959eb1dfaa265ee9911729b73fd9e774690f81e4a2d98a5f1e54977",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "9cbdf753bb721961",
+      "variant": "pen_struct_b2",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "9cbdf753bb721961",
+      "artifacts": {
+        "final_eval_summary.json": "1b147144ac37c8b2bd2d47a7724ce9096851b5a31b5b2c5761dc5fe70a9ad41b",
+        "job.json": "8c7bcc3aa524852d5702b35446a1d532179e9f4ae68af117b91623f8911fdcec",
+        "task.json": "8c7bcc3aa524852d5702b35446a1d532179e9f4ae68af117b91623f8911fdcec",
+        "run_status.json": "c345055cdf4f9bcd2499833dbe52309bfe7ab01342470b62130e623596a5177c",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "897ca4280505c341fdc303548a5a16317246c6adca2c61c9bf81c3ceeeff4ac1",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "b31fe624e7375cde",
+      "variant": "pen_struct_b3",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "b31fe624e7375cde",
+      "artifacts": {
+        "final_eval_summary.json": "40cd7a136e6d095907bd2ce0321cba1a3181ae09371e57bbf2e788a90fc87618",
+        "job.json": "ee6e8095ca82baf859ffa431b840d3df5246272c6a1436d04abb3ac7c260b64c",
+        "task.json": "ee6e8095ca82baf859ffa431b840d3df5246272c6a1436d04abb3ac7c260b64c",
+        "run_status.json": "d826da70f8647542dad43ea1793ff1484af578c0ade76e5b7f193624cbfbd7eb",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "3d7b9d7c827e0e9f53e6e91cdd6d6e6fc3565e586f78bf6865de29f348de0205",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "b3b07517400c81c9",
+      "variant": "td3_struct_split",
+      "seed": 3,
+      "layout_seed": 1003,
+      "config_hash": "b3b07517400c81c9",
+      "artifacts": {
+        "final_eval_summary.json": "0875293e50da81b58d61e831cc4d6b337d04301e1532ea6b24a0964bdcf6d721",
+        "job.json": "28d7c9607a907080bf65125edd26b3993a6e3331552fdb13904be4c12123053e",
+        "task.json": "28d7c9607a907080bf65125edd26b3993a6e3331552fdb13904be4c12123053e",
+        "run_status.json": "477b7708dd385896c1a1f5a349c4db62ca941342a141d8d7f2cc905fe242b520",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "2296b14ba5b7e286ad1f2ff93f967361b0e5886424127b2852748cf92af67ec6",
+        "environment.json": "c1acf4a8f208374da7b1d9d2e8646b2a64648a73fd8de13fac6990832d870e68",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "b597353ef631a23a",
+      "variant": "sfr",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "b597353ef631a23a",
+      "artifacts": {
+        "final_eval_summary.json": "f1b4c8e2ddf3f8a0af38739a5e891c3968b0df6fec6345ed1d438fb74900bf75",
+        "job.json": "2ad216893be69b94bf150848303e9f5ec9a645b80a6eb12b6c26a12f54ba4eb5",
+        "task.json": "2ad216893be69b94bf150848303e9f5ec9a645b80a6eb12b6c26a12f54ba4eb5",
+        "run_status.json": "d41161ad46da4fcfd3b80a1e10df13241eb8b9f65d1a1d90c5a86c393e769a5f",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "e6fc0d82b3bce6709019f613f70d64c0347241d14ad456f51b29e9ee83b08c47",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "b681d58026289c0b",
+      "variant": "pen_struct_b3.5",
+      "seed": 1,
+      "layout_seed": 1001,
+      "config_hash": "b681d58026289c0b",
+      "artifacts": {
+        "final_eval_summary.json": "7336553819bac70ddc19f10aa04d1e34d73424041d056ca1fc77520308942cfe",
+        "job.json": "0d4837f41f2cddf839adaa35211a0c1431ae36797a0faf32b19ba023a8abce05",
+        "task.json": "0d4837f41f2cddf839adaa35211a0c1431ae36797a0faf32b19ba023a8abce05",
+        "run_status.json": "ff0fc9efd28f2a032a1b17263baea39990b918f95e463c30c17c4978778351ba",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "59e862bd3959eb1dfaa265ee9911729b73fd9e774690f81e4a2d98a5f1e54977",
+        "environment.json": "7a2301917b59a5aa6c64d0be204150d983f478ecc590031ae4018be812eaba4b",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "ec79cf644867a948",
+      "variant": "pen_struct_b3",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "ec79cf644867a948",
+      "artifacts": {
+        "final_eval_summary.json": "e92d645b03e115056e1ee18a61f63bd522a82165447873982718c5a44e376883",
+        "job.json": "d1d04eb30676c82202037926b44c51710acf3fb192f82d16eb06a928d69425e1",
+        "task.json": "d1d04eb30676c82202037926b44c51710acf3fb192f82d16eb06a928d69425e1",
+        "run_status.json": "2e0f7c06658cf480483de98cf5735b496e82e7823fd23a3ab86dafdfa5f414df",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "4e3f627b33bb66b38c9a35d36524aa05c5b6475865a170f7417f446ee819d29e",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "f105baa4579045bf",
+      "variant": "pen_struct_b4.5",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "f105baa4579045bf",
+      "artifacts": {
+        "final_eval_summary.json": "6e9b31435ec61ce979587236b492ce9d2428fa7511fb07b0c4f04fc0f37cc9eb",
+        "job.json": "aabbf72b3152f4c07b28b548aecdfb65210a17b7fa6539f94f4a7817d990202f",
+        "task.json": "aabbf72b3152f4c07b28b548aecdfb65210a17b7fa6539f94f4a7817d990202f",
+        "run_status.json": "8984ee32c8ae84e68dd47978ab1c05879e1de39dd782e9de59528c7e4b9159fa",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "cc042fc23920befd7833f2fa951c3e884fbd881c86e2b3908807523af7b90aac",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "f506fa2f7fb0562c",
+      "variant": "pen_struct_b2.5",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "f506fa2f7fb0562c",
+      "artifacts": {
+        "final_eval_summary.json": "71eff8809ce4c28b61a96d510986e3f3bc985aa25b783444dbada1c6abc27695",
+        "job.json": "ab15336a5c37c1ba8af886154164412ec393f3df085a110ea41c223991a03ade",
+        "task.json": "ab15336a5c37c1ba8af886154164412ec393f3df085a110ea41c223991a03ade",
+        "run_status.json": "90a7cb66ffcb8df92e1b1d89c005af2684c5234fd9eb48328c3f2c9f4551fdad",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "897ca4280505c341fdc303548a5a16317246c6adca2c61c9bf81c3ceeeff4ac1",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "f5460ab82e08a641",
+      "variant": "td3_struct_split",
+      "seed": 4,
+      "layout_seed": 1004,
+      "config_hash": "f5460ab82e08a641",
+      "artifacts": {
+        "final_eval_summary.json": "20f5b6536ba98e02500b8b29849993be869cc32da4b5202e2b12cfe8bfc0bd2e",
+        "job.json": "6e7e3042ea1a5e672e752c398755e99544fe9c91b6d0329c0a13950533287e39",
+        "task.json": "6e7e3042ea1a5e672e752c398755e99544fe9c91b6d0329c0a13950533287e39",
+        "run_status.json": "0689c700e676e570cf943f16b83d1f09e0da44854a2f9fb3f4d94aba740cdc9d",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "d102e6753a7c97088d1c334d41e84ea9e1d4c9d861c7114fd24ba0bf8871abfd",
+        "environment.json": "2199d735a3961c276cc68f47e7c37f756c86fc111f2f38719f7bb9256dbf9418",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "f6de4feef3f43163",
+      "variant": "td3",
+      "seed": 0,
+      "layout_seed": 1000,
+      "config_hash": "f6de4feef3f43163",
+      "artifacts": {
+        "final_eval_summary.json": "164ebb64d847cc117e76492bdad49b357ce32fedd3058e4978d3e3bc44e38057",
+        "job.json": "22487f8756848774ae5d6192bc7ff73bb0ff654cc9f3576ca372e26a125016ca",
+        "task.json": "22487f8756848774ae5d6192bc7ff73bb0ff654cc9f3576ca372e26a125016ca",
+        "run_status.json": "f7e192bab67efa78cb556c56dcaa86e1f1f0f086735b9e7fa3b163f78973af8a",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "4e3f627b33bb66b38c9a35d36524aa05c5b6475865a170f7417f446ee819d29e",
+        "environment.json": "265580835521380265c54aa4cd0398a85e8198f32739139998f131da004228ba",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "f6f14886b69091fe",
+      "variant": "pen_struct_b2",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "f6f14886b69091fe",
+      "artifacts": {
+        "final_eval_summary.json": "d55a645e07e792f9224d181a166f5846e75c2391a6fc25273582a78243958d91",
+        "job.json": "9de683ffae7658e54f4969bf54676f5e254102c376ce9d3770e875450836dca6",
+        "task.json": "9de683ffae7658e54f4969bf54676f5e254102c376ce9d3770e875450836dca6",
+        "run_status.json": "ab44548a5801a888e7cfab7c1defe3b6696e01c129553c8156440669c54a80a8",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "cc042fc23920befd7833f2fa951c3e884fbd881c86e2b3908807523af7b90aac",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "fcf8eb25b85667ef",
+      "variant": "td3",
+      "seed": 3,
+      "layout_seed": 1003,
+      "config_hash": "fcf8eb25b85667ef",
+      "artifacts": {
+        "final_eval_summary.json": "6c10fb7e256cab2f9b57e131e844be50421448196df75ae2ec2a4e831216b8b1",
+        "job.json": "9d0afa8be00c82b3c4b4115df06286a5ea5dc9234e160e0c4554b534559d0e06",
+        "task.json": "9d0afa8be00c82b3c4b4115df06286a5ea5dc9234e160e0c4554b534559d0e06",
+        "run_status.json": "bff2be2fcf923fa4385ad3e443f8c6ff8c46c6aa8715c63330ccdbd6f996fb81",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "2296b14ba5b7e286ad1f2ff93f967361b0e5886424127b2852748cf92af67ec6",
+        "environment.json": "c1acf4a8f208374da7b1d9d2e8646b2a64648a73fd8de13fac6990832d870e68",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    },
+    {
+      "id": "fd7604e5a97d4d7d",
+      "variant": "td3_struct",
+      "seed": 2,
+      "layout_seed": 1002,
+      "config_hash": "fd7604e5a97d4d7d",
+      "artifacts": {
+        "final_eval_summary.json": "45f6e6b2982c1e1309bf2e81e7bb02f75be8b3f5777e4e19196a7d6414f27a8b",
+        "job.json": "ff5b5155bfb3af0b27774a42e6e01435bfeaf6646667be449e39d61cbb9d7327",
+        "task.json": "ff5b5155bfb3af0b27774a42e6e01435bfeaf6646667be449e39d61cbb9d7327",
+        "run_status.json": "05f82dad94861ab05718a44029c0e66a49f7ee488046e321d3484fed7becf66d",
+        "revision_source.json": "475f35bd823e270eb991b77809d43e4b97d5ba0029f8b299259feceb94c44d13",
+        "hardware.json": "cc042fc23920befd7833f2fa951c3e884fbd881c86e2b3908807523af7b90aac",
+        "environment.json": "a15eb2cfd9f326993d3de51a99f8c6565af085496a7555e8ad88b26bb0c10ae0",
+        "runtime.json": "4a83abad9eccdc3c48efdf8e4c1990c36416b70d2c2bddbe5c8430fed36f6689"
+      }
+    }
+  ],
+  "archived_file_hashes": {
+    "raw/test/e705d178ed0d0ed8/test_summary.json": "6105d523df7ad6bab886bd5ad58c6ffb8c9a10d655135a61204f4ff80de3dffd",
+    "raw/test/212ea6cfe5bda80b/test_summary.json": "05293c94db4afada329d049a6c6c9ec69e2f00ae213d24a09f76cdf95c494e61",
+    "raw/test/edb63fea853946cc/test_summary.json": "8a33682d48c2ebd91ed0589748942ea255c6c465d8af91a24a6fad4496d18691",
+    "raw/test/5323372de0983597/test_summary.json": "5123a3f26ce7b0e27e01c319ef092dc243c56e5c39eeed58cadc0a9670b746b2",
+    "raw/per_slot/e9f490e2ea596fed/test_summary.json": "7a0fa6a384c07d448bfdd20c771b3adcf7b634ed68c64873b4a65ad3618f65fb",
+    "raw/per_slot/febbb6fba42a1f5d/test_summary.json": "29517d56a927ac907c08233178b48cdddf6e30a0b208b9a506a2a5151a900550",
+    "raw/per_slot/3059ee4507d045fc/test_summary.json": "7ddfb24c2ea87007be4f7899c7963cdfa06f81bae1df78abeb7832f519ef9442",
+    "raw/per_slot/2cf95e7f7eb06fac/test_summary.json": "8d2bc4817f537851f68da55a6621c0b9e56cec3e9db87315a062fc4f07e9a125",
+    "raw/test/86673a66a243af80/test_summary.json": "3a6eae40c31d4328de258aeb1af6ce45272bf4740a4f1436bc298c880312c8b0",
+    "raw/test/cf0de1170314f63e/test_summary.json": "8aaa05d7c67e1b41de56f5f037eb2e80bf57459ef2759c903d70d07f45b69602",
+    "raw/test/2639f9cd0531e17a/test_summary.json": "cf4016771bfa77b3901f1aa2152eaa028bcbc8237e87c752b116bc386c98a463",
+    "raw/test/07d35dd980725219/test_summary.json": "2948a927ecc6591458f97fb0ee5c1fca8e328d853abe03a573a7661278813fbb",
+    "raw/per_slot/13078571ad143d2d/test_summary.json": "e17fba509de2bd28040d5b235c9d0c20920e4b2b590ff9f430f2bc4b4295f756",
+    "raw/per_slot/b8523e7675330784/test_summary.json": "580230c0bc338dd86f0380e481b4a25194da1b718fc3984831da6f71dc9dc2ae",
+    "raw/per_slot/0001b1fc94dd7d88/test_summary.json": "dd628eca2a3fe88d7c5ebc6498a28ab854c82af4c76e5a0e894eb2ec8b5894b4",
+    "raw/per_slot/aab66f48d2cbe56c/test_summary.json": "5574b3b5aa2430adee3d09a13c939795b55da479227d09564087997709d06f81",
+    "raw/test/8975eb96ae66009e/test_summary.json": "7b9ca3b0df69d88c83c21e84b22d66a19bd35c77762ce3dc6790937990c7dcb2",
+    "raw/test/cea3f66759537863/test_summary.json": "92b794553a23a96b497596ccae016579bcdd9a85f9402939c84c0b6fdbcf934a",
+    "raw/test/bc38dfb26b3f6565/test_summary.json": "db25ecf4fda529d1c1e367fec22bc03f266c349e6912c93a3c4cd2013100f3ae",
+    "raw/test/762317f120fa6a8e/test_summary.json": "284a342137e205e6a91be0921490d502bb67e76135022e87c2111ccd0712427f",
+    "raw/per_slot/384fae34e97f9e5f/test_summary.json": "4d90b0258a3a8291da9e256aa6669068468d9d0a3ab5abc3e28b85a7b3a14b7f",
+    "raw/per_slot/c96949c12e6a5578/test_summary.json": "2bc3a3c967ca0998b1fb170b19ffd02d33f5be21470357cdb9bb8781b02697a8",
+    "raw/per_slot/0a43a83159835225/test_summary.json": "533c745f94ea097045dea2ccc2485c935c7824a1b63cf70e651d4d911a32aa0e",
+    "raw/per_slot/0df243a6a37d639b/test_summary.json": "b351407f6b36a2f1fea687c13121fa60b5e21c2a739bcae04e6ae74c8c5e89a1",
+    "raw/test/bdde1aac76d20729/test_summary.json": "de9924d35558ffdbcd2d1e65e6bc1b5545bd28d61c8f496e2d9bd31af2bb00eb",
+    "raw/test/bba59fd1b0fa760a/test_summary.json": "41b0231fcf14f35738cc1358cc936b1ed0a4c948c553f7cc86109514cb186a54",
+    "raw/test/4b0e371d7c8ba52c/test_summary.json": "9a0f4981a30e97077f0d85ad98f275edd4e9eb07588c5adcc1fd327c78741985",
+    "raw/test/8962a454468f98d6/test_summary.json": "452f9b358e445c9d84d87c6b4af4f19301241d3e82f1524e546a60e9765b565a",
+    "raw/per_slot/d42e5610d3659cd1/test_summary.json": "fca720659c895310f8403f8771b13f1398981bb5ec32f01bfdc944bed9d54c81",
+    "raw/per_slot/d57247af799c0d47/test_summary.json": "049caa5a7a6bedc20e961070e8d030c66042ae41a8db728b72503562c4fa7ea1",
+    "raw/per_slot/82c8231cae9bdbfa/test_summary.json": "222d1522ffc7e6a14fae1f2d3d4f39f5bb5645abff41c86e593d676bd35b77ac",
+    "raw/per_slot/cc74cb196f149bf4/test_summary.json": "275dda50a2e531df80ea2d3c830d701629a6743bcb876d0c488529be1220f739",
+    "raw/test/01537f373e6d31f3/test_summary.json": "b4dd70b36a145e1dfe1eae52ba558ec220f7d236dae92d9c42c126eeea5a8fcd",
+    "raw/test/d46a92ac94716239/test_summary.json": "93d4832f2ad42c6dacbf4ce9ac2f3f478be14e29cfe86b18d1cfe5d9a199b061",
+    "raw/test/643b38a4b87f8207/test_summary.json": "1896588184d838d21ed0dbc776a1a4a7027c1197f7b2e224a961e16540ec1ee9",
+    "raw/test/280da4ba0a970be4/test_summary.json": "38959520c68b20b52a601c3827d77a7fa139ed2b37e81da42ebb815d3aa7b805",
+    "raw/per_slot/1941e8070a7c1f35/test_summary.json": "8142edbf50582977c883d2f1ba10529e10debe6c09394050834bc878f6f0da1c",
+    "raw/per_slot/27afa437453eac31/test_summary.json": "a280d1b0e25bfa25717abb6706455f56c10f3f09cf86d20dde6489f768a5071b",
+    "raw/per_slot/a5a7f54d2afc819f/test_summary.json": "9f55020cda19fba72673748e5c634e4ce286a9b91a71935a6ae52d2f9f00f009",
+    "raw/per_slot/d9304a7884fa0b15/test_summary.json": "ab77d810a82168787b116c2c5d8a80a2dbffeb66345b8296ea1e0252e2413383",
+    "raw/test/207b083473352aa0/test_summary.json": "bef29669448d1294ac2a7e58751d2a31645fa5a16bc8ebb2b7ef67804fba5923",
+    "raw/test/d0002ea4572a6245/test_summary.json": "dc3726f07e3c03ea3617af79894f5f36b35b6bc38f3d3f3bc88f19b0cd40b733",
+    "raw/test/382715e47e463636/test_summary.json": "c11e4c73ee4c7a650fdbbe839a2bca431a01d5888450aca131d5468224401c56",
+    "raw/test/142e7664fd626b54/test_summary.json": "2d08a510689f1c008ce43f9bff1b09ae859535733b51c4481c23ff394be2ca56",
+    "raw/test/94e6eb875758ce0b/test_summary.json": "dbbb57db0ce0182e2fd03dd117eb2700ef4850ed8b5a4e3f32ebbec977df5bc3",
+    "raw/test/ccd3c55656bb423e/test_summary.json": "f271d7ee6b8070561727e6f5d128928bf5bad53b952e2c3da64777379f03e046",
+    "raw/test/89570d4516b158a3/test_summary.json": "f59f1e1ce184a2266a329925e88b139773f84e03d6a7e9b91c81c784c2b22fd0",
+    "raw/test/849e090097399022/test_summary.json": "d4ad3095328ec6f53f93314ca9f3f3b2b666719eaeaa74a5245c793af827fc8b",
+    "raw/test/50fc3ed1f23d5a2f/test_summary.json": "393798464f43a6f5de8279bba2195b2b236362d6f92964054732d589c5e550e9",
+    "raw/test/7e14c6d136cb2a43/test_summary.json": "b22da3ff9c4bc26952fbde668ba6fc2cd3e5da5ffa61a961e4fb34e85c5e1c7e",
+    "raw/test/0caedbfbf8380b91/test_summary.json": "b3405a85c9f3f225f49d1759efa72d04764366823b1580f78930a149f7422ebc",
+    "raw/test/e1f7ac32a8d27154/test_summary.json": "3e402c7956d47402ef0b28b2ddfec5182f47e796827866b2331998b3c17938bc",
+    "raw/test/7f27718a6a252111/test_summary.json": "24d4003961f09aad60bd1a19d00f5648c8c918a0044b6b66d2594f02fc17884f",
+    "raw/test/245035b6208a1427/test_summary.json": "a6c6a824efd435919fc6fd291b70c792e11570b42ef10d8d354dde5bfd05d028",
+    "raw/test/b8df2f933882455c/test_summary.json": "6e17a8666197e095dd79e80b5f0fdee4565554aa288a01064a6cfb5649197b14"
+  },
+  "large_files_omitted": [
+    "all checkpoint.pt/model*.pt files",
+    "Fair test eval_slots.csv files",
+    "worker.log files"
+  ],
+  "formal_training_or_optimization_run_during_archiving": false
+}

@@ -92,6 +92,17 @@ The recovered per-slot experiment uses the same five paired deployments at `N=70
 
 The Actor provides the lowest online decision latency by a wide margin. The numerical optimizer obtains the lowest mean energy, but its failure cost is close to the 10% budget and its BFSR is substantially below the Actor. This experiment therefore supports amortized online decision making; it does not establish Actor energy optimality at an equal failure level. The numerical optimizer uses full simulator-model information and is not a proven global optimum. Detailed per-seed values and provenance are in `data/per_slot_per_seed.csv`, `data/per_slot_report.md`, and `data/per_slot_provenance.json`.
 
+## 8. Container Rerun
+
+The Fair-Critics and Per-slot stages were rerun in the container under the current revision source (`36c1289d...`, revision digest `7e9709f3...`). These are the preferred results for the current repository version:
+
+| Stage | Completed | Primary result |
+|---|---:|---|
+| Fair-Critics | 35/35 test cases, 35/35 parent trainings | SFR-SAC: 9.38% cost, 8.59 mJ/device/slot, 96.23% BFSR |
+| Per-slot | 20/20 tests | Actor: 9.38% cost, 8.59 mJ/device/slot, 96.37% BFSR, 1.750 ms median |
+
+The complete container tables and provenance are archived under `container_20261109/`. The earlier historical local Per-slot archive remains available for provenance comparison and is not combined with this rerun.
+
 ## Main Conclusion
 
 The revision evidence supports the following paper-level conclusion:

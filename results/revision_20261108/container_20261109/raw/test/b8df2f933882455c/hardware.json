@@ -1,0 +1,9 @@
+{
+  "torch": "2.5.1+cu121",
+  "cuda": "12.1",
+  "gpu": "NVIDIA A800-SXM4-80GB",
+  "visible_devices": "0",
+  "source_digest": "36c1289d0f1a5bba14e49f93f8713ae2128dec4dc3b66c587520145c9eab5777",
+  "train_seed": 2,
+  "layout_seed": 1002
+}

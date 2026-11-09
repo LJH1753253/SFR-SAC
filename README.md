@@ -104,6 +104,10 @@ The recovered per-slot optimization evidence is archived in
 `results/revision_20261108/data/per_slot_report.md`, with per-seed raw summaries
 and provenance under `results/revision_20261108/data/per_slot_runs/`.
 
+The current container rerun of Fair Critics and Per-slot is archived under
+`results/revision_20261108/container_20261109/`; its source and revision
+digests are recorded in the accompanying provenance file.
+
 Generate the primary revision figures with:
 
 ```bash

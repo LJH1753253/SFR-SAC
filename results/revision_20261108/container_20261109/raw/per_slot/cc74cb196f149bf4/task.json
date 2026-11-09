@@ -1,0 +1,20 @@
+{
+  "task": "per_slot",
+  "optimizer": "oracle",
+  "parent": "/public/home/hnust19209626205/iotj_fair_per_slot_20261109/outputs/fair_per_slot_20261109/runs/N70/layout1003/train3/845936691b98b74b",
+  "parent_id": "845936691b98b74b",
+  "N": 70,
+  "seed": 3,
+  "layout_seed": 1003,
+  "variant": "per_slot_oracle",
+  "method": "safe",
+  "resource": "cpu",
+  "test_rng_seed": 2907003,
+  "test_episodes": 30,
+  "iters": 100,
+  "warmup_episodes": 10,
+  "warmup_rng_seed": 2957003,
+  "revision_source_digest": "7e9709f3b0c2743d088af104f4fde80d2a7110c84c25ae2f81b89b2a5efeb03a",
+  "id": "cc74cb196f149bf4",
+  "directory": "/public/home/hnust19209626205/iotj_fair_per_slot_20261109/outputs/fair_per_slot_20261109/per_slot/cc74cb196f149bf4"
+}
