@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "results" / "paper"
+SUMMARY = PAPER / "summary"
 
 
 def read_csv(path):
@@ -50,6 +51,7 @@ def main():
     failures = []
     required = [
         PAPER / "data_sources.json",
+        SUMMARY / "evidence5_summary.csv",
         PAPER / "tables/main_results.csv",
         PAPER / "tables/fair_critics.csv",
         PAPER / "tables/per_slot.csv",
@@ -90,10 +92,18 @@ def main():
     per_slot_protocol = provenance["protocol"]["per_slot_episodes"]
     check(per_slot_protocol == 30 and per_slot_protocol * 200 == 6000,
           "Per-slot protocol must specify 30 episodes and 6000 slots", failures)
+    check(not (PAPER / "per_seed/evidence5_summary.csv").exists(),
+          "Aggregate evidence5_summary must not be presented as per-seed data", failures)
+    check(not (PAPER / "per_seed/per_slot.csv").exists(),
+          "Historical local per-slot aggregate must not enter canonical per-seed data", failures)
 
     data_sources = json.loads((PAPER / "data_sources.json").read_text(encoding="utf-8"))
+    summary_rows = read_csv(SUMMARY / "evidence5_summary.csv")
+    check(len(summary_rows) == 65, "Summary row count must be 65", failures)
     check(data_sources["fair_critics"]["source_digest"].startswith("36c1289d"), "Fair source digest mismatch", failures)
     check(data_sources["per_slot"]["revision_source_digest"].startswith("7e9709f3"), "Per-slot revision digest mismatch", failures)
+    check("container_20261109" in data_sources["fair_critics"]["source"], "Fair source is not latest container archive", failures)
+    check("container_20261109" in data_sources["per_slot"]["source"], "Per-slot source is not latest container archive", failures)
 
     changed_core = subprocess.check_output(
         ["git", "diff", "--name-only", "main...HEAD", "--", "agents", "cloud24", "envs", "v2", "revision"],
@@ -101,8 +111,21 @@ def main():
     ).strip()
     check(not changed_core, f"Core source changed on finalization branch: {changed_core}", failures)
 
-    figures = list((PAPER / "figures").glob("Fig*.pdf"))
-    check(len(figures) >= 10, f"Expected at least 10 generated PDF figures, found {len(figures)}", failures)
+    figures = list((PAPER / "figures").glob("Fig[0-9]*.pdf"))
+    pngs = list((PAPER / "figures").glob("Fig[0-9]*.png"))
+    check(len(figures) == 11, f"Expected 11 generated PDF figures, found {len(figures)}", failures)
+    check(len(pngs) == 11, f"Expected 11 generated PNG figures, found {len(pngs)}", failures)
+    check((PAPER / "figures/Figures_contact_sheet.pdf").exists(), "Missing PDF contact sheet", failures)
+    check((PAPER / "figures/Figures_contact_sheet.png").exists(), "Missing PNG contact sheet", failures)
+    for filename, prefix in (("eta_sensitivity_N70.csv", "eta"), ("budget_sensitivity_N70.csv", "d"),
+                             ("background_load_N70.csv", "b0"), ("penalty_beta_N70.csv", "beta")):
+        sensitivity_rows = read_csv(PAPER / "tables" / filename)
+        values = []
+        for row in sensitivity_rows:
+            label = row["Variant"]
+            token = label.split("_", 1)[1] if prefix == "b0" else label[len(prefix):]
+            values.append(float(token))
+        check(values == sorted(values), f"Sensitivity order mismatch: {filename}", failures)
     if failures:
         raise SystemExit("\n".join(failures))
     print(json.dumps({"status": "passed", "main_rows": len(main_rows), "fair_seed_rows": len(fair_seed),

@@ -1,9 +1,13 @@
 {
   "status": "canonical_paper_results",
   "purpose": "Machine-readable mapping from final Paper1 tables/figures to frozen source data.",
+  "directory_semantics": {
+    "summary": "Aggregate exports; not independent per-seed records.",
+    "per_seed": "True paired per-seed records where available. Main-scale detailed per-seed raw files are not present in this checkout."
+  },
   "main_results": {
     "source": "results/final/tables/main_results.csv",
-    "supporting_source": "results/final/data/evidence5_summary.csv",
+    "supporting_source": "results/paper/summary/evidence5_summary.csv",
     "scope": "N=50,55,60,65,70; SFR-SAC, Penalty SAC, Safe TD3, Lyapunov-inspired rule, Vanilla SAC",
     "completed_pairs": 5,
     "units": {"cost": "percent", "energy": "mJ/device/slot", "bfsr": "percent"},
@@ -53,5 +57,7 @@
     "reason": "Historical independent run with a different source/checkpoint provenance; retained for traceability but excluded from canonical paper results."
   },
   "figure_script": "scripts/plot_paper_results.py",
-  "validator": "scripts/validate_paper_results.py"
+  "validator": "scripts/validate_paper_results.py",
+  "contact_sheet": "results/paper/figures/Figures_contact_sheet.pdf",
+  "lambda_diagnostics": "results/paper/LAMBDA_DIAGNOSTICS.md"
 }

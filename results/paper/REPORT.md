@@ -52,7 +52,9 @@ The fixed-penalty sensitivity is a trade-off curve. Low beta produces high failu
 
 **Results.** The CPO table reports all tested `gamma=0` and `gamma=0.99` rows for `N=50,...,70`. The rows exhibit different cost-energy-BFSR operating points; no single row is treated as a universal winner.
 
-**Qualification.** This is a baseline comparison under the recorded protocol, not a claim that CPO and SFR-SAC use identical critics or implementation details.
+At `N=70`, CPO `gamma=0` reports `5.72 +/- 0.89%` cost, `12.94 +/- 0.73 mJ`, and `92.78 +/- 5.56%` BFSR. CPO `gamma=0.99` reports `9.29 +/- 4.70%`, `12.31 +/- 2.00 mJ`, and `61.48 +/- 48.99%`, while SFR-SAC reports `9.38 +/- 0.16%`, `8.59 +/- 0.36 mJ`, and `96.23 +/- 2.31%`. Across N, CPO gamma settings change both reliability and energy; these results do not support a one-dimensional ranking.
+
+**Qualification.** CPO uses the recorded split-actor setting. Its critic and update structure is not identical to SFR-SAC, so the comparison does not isolate the SAC update rule alone.
 
 ## 7. Immediate vs. Discounted Critics
 
@@ -86,11 +88,15 @@ The fixed-penalty sensitivity is a trade-off curve. Low beta produces high failu
 
 **Results.** The one-thread benchmark includes `N=50,70,200` for SFR-SAC and Safe TD3, plus the trained SFR-SAC actor. SFR-SAC initialized-policy median latency is `1.211`, `1.223`, and `1.538 ms` for `N=50,70,200`; the trained `N=70` actor is `1.231 ms`. Safe TD3 is faster in this implementation, with median values below `0.4 ms` through `N=200`.
 
-**Qualification.** These values compare implementation paths on the stated hardware. They are not full end-to-end system latency measurements.
+The latency table distinguishes initialized networks at `N=50,70,200` from the trained `N=70` SFR-SAC actor. P50, P95, and P99 denote the median, 95th percentile, and 99th percentile of the measured serial inference/action-decode calls. The available compact latency export does not include a hardware record in the canonical table; the timing should therefore be reported with the hardware metadata from the original latency run rather than inferred from these numbers.
+
+**Qualification.** These values compare implementation paths on the stated hardware. They are not full end-to-end system latency measurements and do not establish a 30 ms end-to-end guarantee. Per-slot optimizer timing uses a different measurement path and should not be interpreted as a direct implementation-speed comparison with the initialized-network benchmark.
 
 ## 11. Additional Ablation Studies
 
-The canonical package retains eta sensitivity, budget sensitivity, background-load sensitivity, penalty beta sensitivity, lambda-update comparisons, failure composition, and Fair-rule comparisons under `tables/` and `per_seed/`. The plots expose the full tested ranges rather than selecting only favorable points. Lambda and dual-update results are implementation sensitivities, not universal optimality claims.
+The canonical package retains eta sensitivity, budget sensitivity, background-load sensitivity, penalty beta sensitivity, lambda-update comparisons, failure composition, and Fair-rule comparisons under `tables/`, `summary/`, and `per_seed/`. The plots expose the full tested ranges rather than selecting only favorable points. Lambda and dual-update results are implementation sensitivities, not universal optimality claims.
+
+The Hinge-versus-Linear table reports all budgets `d=0.08,0.10,0.12`. Linear results have substantially larger SD for several rows, especially `d=0.08` and `d=0.10`. The available public archive contains aggregate summaries but no retained lambda trajectory logs for these training runs. Therefore, the observed final-lambda pattern is a confirmed numerical fact in the table, while its trajectory-level cause cannot be verified from the available logs. It should not be presented as a proved monotonic dual-update law.
 
 ## 12. Statistical Analysis
 
@@ -98,7 +104,7 @@ Available paired results report mean and sample SD across deployment pairs. Pair
 
 ## 13. Limitations
 
-1. Aggregate cost and BFSR do not guarantee per-device reliability. Device-level P95 diagnostics can remain high.
+1. Aggregate cost and BFSR do not guarantee per-device reliability. The canonical SFR-SAC Fair result reports device-failure P95 `27.85%` in the recorded table, so no per-device reliability guarantee is claimed.
 2. The immediate cost-critic setting uses `gamma=0`; these experiments do not establish a long-horizon CMDP safety guarantee.
 3. The AP-independent ablation is degenerate by construction because candidate AP gains are symmetric.
 4. Numerical and MB-greedy baselines use simulator-model information unavailable to the learned actor.

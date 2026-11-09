@@ -29,7 +29,7 @@ python scripts/plot_paper_results.py
 python scripts/validate_paper_results.py
 ```
 
-The plotting script reads only `results/paper/tables/*.csv` and `results/paper/per_seed/*.csv`. It does not read historical output directories or hard-code experimental measurements. The validator checks table row counts, method sets, aggregate consistency, source identities, figure count, and core-source immutability on the finalization branch.
+The plotting script reads only `results/paper/tables/*.csv`, `results/paper/summary/*.csv`, and `results/paper/per_seed/*.csv`. It does not read historical output directories or hard-code experimental measurements. The validator checks table row counts, method sets, aggregate consistency, source identities, figure/contact-sheet completeness, sensitivity ordering, and core-source immutability on the finalization branch.
 
 ## Integrity Notes
 

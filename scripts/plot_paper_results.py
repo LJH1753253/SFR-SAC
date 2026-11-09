@@ -8,12 +8,14 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results" / "paper"
 TABLES = RESULTS / "tables"
 PER_SEED = RESULTS / "per_seed"
+SUMMARY = RESULTS / "summary"
 FIGURES = RESULTS / "figures"
 
 plt.rcParams.update({
@@ -49,7 +51,10 @@ def mean_sd(value: str):
 
 def save(fig, name: str):
     FIGURES.mkdir(parents=True, exist_ok=True)
-    fig.tight_layout(pad=1.0)
+    if name == "Fig1_main_performance":
+        fig.subplots_adjust(left=.06, right=.99, bottom=.18, top=.90, wspace=.30)
+    else:
+        fig.tight_layout(pad=1.0)
     fig.savefig(FIGURES / f"{name}.pdf", bbox_inches="tight")
     fig.savefig(FIGURES / f"{name}.png", dpi=240, bbox_inches="tight")
     plt.close(fig)
@@ -77,6 +82,19 @@ def main_results():
         ax.set_title(title)
         ax.set_xticks(ns)
         ax.grid(alpha=.25)
+    # Keep the full Vanilla SAC range in the main panel and add a clearly
+    # labelled zoom for the constrained operating range.
+    zoom = inset_axes(axes[0], width="48%", height="43%", loc="lower right", borderpad=1.0)
+    for algorithm in algorithms[:-1]:
+        subset = sorted((r for r in data if r["Algorithm"] == algorithm), key=lambda r: int(r["N"]))
+        x = np.array([int(r["N"]) for r in subset])
+        y, e = zip(*(mean_sd(r["Cost (\\%)"]) for r in subset))
+        zoom.errorbar(x, y, yerr=e, marker="o", linewidth=1.0, markersize=2.5,
+                      capsize=1.5, color=colors[algorithm])
+    zoom.axhline(10, color="black", linestyle="--", linewidth=.6)
+    zoom.set_ylim(0, 12)
+    zoom.set_title("Constrained range", fontsize=7)
+    zoom.tick_params(labelsize=6)
     axes[0].axhline(10, color="black", linestyle="--", linewidth=.8, label="Budget d=10%")
     axes[0].set_ylabel("Percent")
     axes[1].set_ylabel("mJ/device/slot")
@@ -116,6 +134,7 @@ def penalty_form():
     selected = [next(r for r in data if r["Variant"] == key) for key in order]
     x = np.arange(3)
     fig, axes = plt.subplots(1, 3, figsize=(9.2, 3.1))
+    budgets = [8, 10, 12]
     for ax, field, title in zip(axes, ["Failure (%)", "Energy (mJ)", "BFSR (%)"],
                                 ["Cost", "Energy", "BFSR"]):
         for i, mode in enumerate(("hinge", "linear")):
@@ -126,7 +145,10 @@ def penalty_form():
         ax.set_title(title)
         ax.set_xticks(x, ["d=0.08", "d=0.10", "d=0.12"])
         ax.grid(alpha=.25)
-    axes[0].axhline(10, color="black", linestyle="--", linewidth=.8)
+    for i, budget in enumerate(budgets):
+        axes[0].hlines(budget, i - .16, i + .16, color="black", linestyle="--", linewidth=.8)
+    axes[0].plot([], [], color="black", linestyle="--", label="Budget target d")
+    axes[0].legend(frameon=False, fontsize=7)
     axes[0].set_ylabel("Percent")
     axes[1].set_ylabel("mJ/device/slot")
     axes[2].legend(frameon=False)
@@ -140,9 +162,13 @@ def per_slot():
     colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#9467bd"]
     fig, axes = plt.subplots(1, 2, figsize=(8.4, 3.4))
     for r, color in zip(selected, colors):
-        axes[0].errorbar(float(r["energy_mJ_device_slot_mean"]), float(r["cost_percent_mean"]),
+        energy = float(r["energy_mJ_device_slot_mean"])
+        cost = float(r["cost_percent_mean"])
+        axes[0].errorbar(energy, cost,
                          xerr=float(r["energy_mJ_device_slot_sd"]), yerr=float(r["cost_percent_sd"]),
                          marker="o", markersize=5, capsize=2, label=r["method"], color=color)
+        axes[0].annotate(f"BFSR {float(r['bfsr_percent_mean']):.1f}%", (energy, cost),
+                         xytext=(4, 5), textcoords="offset points", fontsize=6, color=color)
     axes[0].axhline(10, color="black", linestyle="--", linewidth=.8, label="Budget d=10%")
     axes[0].set_xlabel("Avg. device energy (mJ/device/slot)")
     axes[0].set_ylabel("Service-failure cost (\\%)")
@@ -215,7 +241,17 @@ def mismatch():
 
 def cpo():
     data = rows("cpo.csv")
+    main = rows("main_results.csv")
     fig, axes = plt.subplots(1, 3, figsize=(9.4, 3.1))
+    main_rows = sorted((r for r in main if r["Algorithm"] == "SFR-SAC"), key=lambda r: int(r["N"]))
+    x_main = [int(r["N"]) for r in main_rows]
+    for ax, field, title in zip(axes, ["Cost (\\%)", "Energy (mJ/device/slot)", "BFSR (\\%)"],
+                                ["Cost", "Energy", "BFSR"]):
+        y, e = zip(*(mean_sd(r[field]) for r in main_rows))
+        ax.errorbar(x_main, y, yerr=e, marker="D", color="#1f77b4", linewidth=1.6,
+                    capsize=2, label="SFR-SAC")
+        ax.set_title(title)
+        ax.grid(alpha=.25)
     for variant, marker, color in (("cpo_g0", "o", "#1f77b4"), ("cpo_g0.99", "s", "#d62728")):
         selected = sorted((r for r in data if r["Variant"] == variant), key=lambda r: int(r["N"]))
         x = [int(r["N"]) for r in selected]
@@ -223,12 +259,11 @@ def cpo():
             y, e = zip(*(mean_sd(r[field]) for r in selected))
             ax.errorbar(x, y, yerr=e, marker=marker, color=color, linewidth=1.4, capsize=2,
                         label=r"$\gamma=" + ("0" if variant == "cpo_g0" else "0.99") + r"$")
-            ax.set_title(title)
             ax.grid(alpha=.25)
     axes[0].axhline(10, color="black", linestyle="--", linewidth=.8)
     axes[0].set_ylabel("Percent")
     axes[1].set_ylabel("mJ/device/slot")
-    axes[2].legend(frameon=False)
+    axes[2].legend(frameon=False, title="Split-actor CPO / SFR-SAC")
     save(fig, "Fig7_cpo")
 
 
@@ -237,15 +272,16 @@ def horizon():
     families = [("sacmlp", "SAC MLP"), ("td3", "Safe TD3"), ("pen5", "Penalty SAC")]
     fig, axes = plt.subplots(1, 3, figsize=(9.4, 3.1))
     x = np.arange(len(families))
-    for gamma, color, offset in (("g0", "#1f77b4", -.12), ("g0.99", "#d62728", .12)):
+    width = .34
+    for gamma, color, offset in (("g0", "#1f77b4", -width / 2), ("g0.99", "#d62728", width / 2)):
         selected = []
         for prefix, _ in families:
             selected.append(next(r for r in data if r["Variant"] == f"{prefix}_{gamma}"))
         for ax, field, title in zip(axes, ["Failure (%)", "Energy (mJ)", "BFSR (%)"], ["Cost", "Energy", "BFSR"]):
             y, e = zip(*(mean_sd(r[field]) for r in selected))
-            ax.errorbar(x + offset, y, yerr=e, marker="o", color=color, linewidth=1.3,
-                        capsize=2, label=rf"$\gamma={0 if gamma == 'g0' else 0.99}$")
-            ax.set_title(title)
+            ax.bar(x + offset, y, width=width, yerr=e, capsize=2, color=color,
+                   edgecolor="black", linewidth=.35,
+                   label=rf"$\gamma={0 if gamma == 'g0' else 0.99}$")
             ax.grid(alpha=.25)
     axes[0].set_xticks(x, [label for _, label in families], rotation=15, ha="right")
     axes[1].set_xticks(x, [label for _, label in families], rotation=15, ha="right")
@@ -260,20 +296,24 @@ def horizon():
 def latency():
     data = rows("latency.csv")
     fig, ax = plt.subplots(figsize=(6.4, 3.5))
+    styles = (("Median (ms)", "-", "o"), ("P95 (ms)", "--", "s"), ("P99 (ms)", ":", "^"))
     for policy, color, marker in (("sfr", "#1f77b4", "o"), ("td3", "#7f7f7f", "s")):
         selected = [r for r in data if r["Policy"] == policy and r["Weights"] == "initialized"]
         selected.sort(key=lambda r: int(r["N"]))
         x = [int(r["N"]) for r in selected]
-        ax.plot(x, [float(r["Median (ms)"]) for r in selected], marker=marker, color=color, label=f"{policy.upper()} median")
-        ax.plot(x, [float(r["P95 (ms)"]) for r in selected], marker=marker, linestyle="--", color=color, alpha=.75, label=f"{policy.upper()} P95")
+        for column, linestyle, point in styles:
+            ax.plot(x, [float(r[column]) for r in selected], marker=point, linestyle=linestyle,
+                    color=color, label=f"{policy.upper()} initialized {column.split()[0]}")
     trained = next(r for r in data if r["Policy"] == "sfr" and r["Weights"] == "trained")
-    ax.scatter([70], [float(trained["Median (ms)"])], marker="*", s=65, color="#d62728", label="SFR-SAC trained, N=70")
+    for column, linestyle, point in styles:
+        ax.scatter([70], [float(trained[column])], marker=point, s=42, color="#d62728",
+                   label=f"SFR-SAC trained P{column.split()[0]}")
     ax.set_yscale("log")
     ax.set_xlabel("Number of devices N")
     ax.set_ylabel("Policy/action-decode time (ms, log scale)")
-    ax.set_title("Decision latency scaling")
+    ax.set_title("Decision latency: initialized vs trained policy")
     ax.grid(alpha=.25)
-    ax.legend(frameon=False, ncol=2)
+    ax.legend(frameon=False, ncol=3, fontsize=6.5)
     save(fig, "Fig9_latency_scaling")
 
 
@@ -287,6 +327,8 @@ def sensitivity():
     ):
         data = rows(filename)
         x = [number(r["Variant"].replace(prefix, "", 1)) for r in data]
+        data = [row for _, row in sorted(zip(x, data), key=lambda pair: pair[0])]
+        x = [number(r["Variant"].replace(prefix, "", 1)) for r in data]
         cost_field = next(key for key in data[0] if key.startswith("Cost"))
         cost = [mean_sd(r[cost_field]) for r in data]
         energy_field = next(key for key in data[0] if key.startswith("Energy"))
@@ -298,13 +340,17 @@ def sensitivity():
         ax.set_xlabel(prefix)
         ax.set_ylabel("Cost (%)")
         ax2.set_ylabel("mJ/device/slot")
-        ax.axhline(10, color="black", linestyle="--", linewidth=.7)
+        if prefix == "d":
+            ax.plot(x, [100 * value for value in x], color="black", linestyle="--", linewidth=.8,
+                    label="Budget target d")
+        else:
+            ax.axhline(10, color="black", linestyle="--", linewidth=.7)
         ax.grid(alpha=.2)
     save(fig, "Fig10_sensitivity")
 
 
 def failure_components():
-    data = rows("evidence5_summary.csv", PER_SEED)
+    data = rows("evidence5_summary.csv", SUMMARY)
     order = [("split_exact", "SFR-SAC"), ("penalty_beta5", "Penalty SAC"),
              ("td3", "Safe TD3"), ("dpp_rule", "Lyapunov-DPP"), ("vanilla", "Vanilla SAC")]
     selected = [next(r for r in data if r["experiment"] == "main" and r["variant"] == variant and r["N"] == "70")
@@ -325,6 +371,28 @@ def failure_components():
     save(fig, "Fig11_failure_components")
 
 
+def contact_sheet():
+    names = [f"Fig{i}" for i in range(1, 12)]
+    files = [FIGURES / f"{name}_{suffix}.png" for name, suffix in (
+        ("Fig1", "main_performance"), ("Fig2", "fair_critics"), ("Fig3", "penalty_form"),
+        ("Fig4", "per_slot"), ("Fig5", "ap_association"), ("Fig6", "model_mismatch"),
+        ("Fig7", "cpo"), ("Fig8", "horizon"), ("Fig9", "latency_scaling"),
+        ("Fig10", "sensitivity"), ("Fig11", "failure_components"))]
+    images = [plt.imread(path) for path in files]
+    fig, axes = plt.subplots(4, 3, figsize=(12, 13))
+    for ax, image, name in zip(axes.flat, images, names):
+        ax.imshow(image)
+        ax.set_title(name)
+        ax.axis("off")
+    for ax in axes.flat[len(images):]:
+        ax.axis("off")
+    fig.suptitle("SFR-SAC Paper1 final figure contact sheet", fontsize=13)
+    fig.tight_layout(rect=(0, 0, 1, .98))
+    fig.savefig(FIGURES / "Figures_contact_sheet.pdf", bbox_inches="tight")
+    fig.savefig(FIGURES / "Figures_contact_sheet.png", dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main():
     main_results()
     fair_critics()
@@ -337,6 +405,7 @@ def main():
     latency()
     sensitivity()
     failure_components()
+    contact_sheet()
     print(f"Wrote figures to {FIGURES}")
 
 

@@ -18,8 +18,11 @@ The canonical Paper1 results are under [`results/paper/`](results/paper/):
 - [`PROVENANCE.md`](results/paper/PROVENANCE.md): source and protocol mapping;
 - [`data_sources.json`](results/paper/data_sources.json): machine-readable table/figure sources;
 - [`figures/`](results/paper/figures/): final PDF and PNG figures;
+- [`figures/Figures_contact_sheet.pdf`](results/paper/figures/Figures_contact_sheet.pdf): contact sheet for rapid visual inspection;
 - [`tables/`](results/paper/tables/): canonical CSV and LaTeX tables;
-- [`per_seed/`](results/paper/per_seed/): paired per-seed evidence.
+- [`summary/`](results/paper/summary/): aggregate exports that are not independent per-seed records;
+- [`per_seed/`](results/paper/per_seed/): true paired per-seed evidence for Fair Critics and Per-slot.
+- [`LAMBDA_DIAGNOSTICS.md`](results/paper/LAMBDA_DIAGNOSTICS.md): recorded lambda result and code-level qualification.
 
 At `N=70`, the canonical container results report SFR-SAC at `9.38 +/- 0.16%` service-failure cost, `8.59 +/- 0.36 mJ/device/slot`, and `96.23 +/- 2.31%` BFSR. The Per-slot Actor result is `9.38 +/- 0.16%`, `8.59 +/- 0.38 mJ/device/slot`, `96.37 +/- 2.12%` BFSR, and `1.750 +/- 0.013 ms` median decision time.
 
@@ -27,7 +30,7 @@ At `N=70`, the canonical container results report SFR-SAC at `9.38 +/- 0.16%` se
 
 ```bash
 python -m pip install -r requirements.txt
-python -m pytest -q tests
+python -m pytest -q tests/test_revision.py
 python scripts/plot_paper_results.py
 python scripts/validate_paper_results.py
 ```
