@@ -26,6 +26,8 @@
 
 **Interpretation.** Structured critics account for a substantial part of the energy operating point. The remaining comparison is consistent with an additional constrained stochastic-policy and dual-regulation effect, but the full improvement is not attributed to SAC alone. The split-actor TD3 result is not used for unconditional energy ranking because its average cost exceeds the budget.
 
+In the figures, `SC` denotes Structured Critics and `SA` denotes Split Actor.
+
 ## 4. Per-Slot Optimization
 
 **Question.** Does the trained actor provide amortized decision making compared with optimizing the critics or the full simulator model at every slot?
@@ -73,6 +75,8 @@ At `N=70`, CPO `gamma=0` reports `5.72 +/- 0.89%` cost, `12.94 +/- 0.73 mJ`, and
 **Results.** The AP-dependent learned SFR-SAC obtains `9.42 +/- 0.09%` cost in the recorded three-pair control. The AP-independent SFR-SAC obtains `39.99 +/- 0.26%` cost and AP-load CV `2.24`. The complete table also includes best-channel AP, AP-independent Safe TD3, and AP-independent MB-greedy controls.
 
 **Interpretation.** AP association requires distinguishable candidate-AP information. When gains are forced to be symmetric, association can concentrate on a subset of APs and create resource contention. This is an applicability condition and model limitation, not a universal failure claim.
+
+In Fig.5, `AP-ind.` denotes AP-independent channel gains and `MB` denotes the full-information MB-greedy control.
 
 ## 9. Physical Model Mismatch
 

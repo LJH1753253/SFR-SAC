@@ -84,7 +84,7 @@ def main_results():
         ax.grid(alpha=.25)
     # Keep the full Vanilla SAC range in the main panel and add a clearly
     # labelled zoom for the constrained operating range.
-    zoom = inset_axes(axes[0], width="48%", height="43%", loc="lower right", borderpad=1.0)
+    zoom = inset_axes(axes[0], width="48%", height="43%", loc="upper left", borderpad=1.0)
     for algorithm in algorithms[:-1]:
         subset = sorted((r for r in data if r["Algorithm"] == algorithm), key=lambda r: int(r["N"]))
         x = np.array([int(r["N"]) for r in subset])
@@ -93,7 +93,8 @@ def main_results():
                       capsize=1.5, color=colors[algorithm])
     zoom.axhline(10, color="black", linestyle="--", linewidth=.6)
     zoom.set_ylim(0, 12)
-    zoom.set_title("Constrained range", fontsize=7)
+    zoom.set_title("Zoom: cost <= 12%", fontsize=7)
+    zoom.set_xticks([50, 60, 70])
     zoom.tick_params(labelsize=6)
     axes[0].axhline(10, color="black", linestyle="--", linewidth=.8, label="Budget d=10%")
     axes[0].set_ylabel("Percent")
@@ -106,7 +107,7 @@ def main_results():
 def fair_critics():
     data = rows("fair_critics.csv")
     wanted = ["sfr", "td3", "td3_struct", "td3_struct_split"]
-    labels = ["SFR-SAC", "Safe TD3", "TD3 +\nstructured critics", "TD3 + structured\ncritics + split actor"]
+    labels = ["SFR-SAC", "Safe TD3", "TD3+SC", "TD3+SC+SA"]
     colors = ["#1f77b4", "#7f7f7f", "#d62728", "#ff7f0e"]
     selected = [next(r for r in data if r["variant"] == key) for key in wanted]
     fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.15))
@@ -189,8 +190,8 @@ def per_slot():
 def ap_ablation():
     data = rows("ap.csv")
     wanted = ["sfr", "sfr_maxgain", "sfr_apind", "td3_apind", "mb_greedy_apind"]
-    labels = ["SFR-SAC\nlearned AP", "SFR-SAC\nbest-channel AP", "SFR-SAC\nAP-independent",
-              "Safe TD3\nAP-independent", "MB-greedy\nAP-independent"]
+    labels = ["SFR Learned", "SFR Best-AP", "SFR AP-ind.",
+              "TD3 AP-ind.", "MB AP-ind."]
     selected = [next(r for r in data if r["Variant"] == key) for key in wanted]
     colors = ["#1f77b4", "#ff7f0e", "#d62728", "#7f7f7f", "#2ca02c"]
     fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.25))

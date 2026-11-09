@@ -24,6 +24,8 @@ The canonical Paper1 results are under [`results/paper/`](results/paper/):
 - [`per_seed/`](results/paper/per_seed/): true paired per-seed evidence for Fair Critics and Per-slot.
 - [`LAMBDA_DIAGNOSTICS.md`](results/paper/LAMBDA_DIAGNOSTICS.md): recorded lambda result and code-level qualification.
 
+The public root keeps the final research entry points. Historical development runbooks and preflight notes are retained under [`docs/archive/`](docs/archive/) and are not part of the primary reader path.
+
 At `N=70`, the canonical container results report SFR-SAC at `9.38 +/- 0.16%` service-failure cost, `8.59 +/- 0.36 mJ/device/slot`, and `96.23 +/- 2.31%` BFSR. The Per-slot Actor result is `9.38 +/- 0.16%`, `8.59 +/- 0.38 mJ/device/slot`, `96.37 +/- 2.12%` BFSR, and `1.750 +/- 0.013 ms` median decision time.
 
 ## Reproduction
