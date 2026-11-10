@@ -10,8 +10,8 @@ The final protocol uses:
   episodes;
 - five paired deployment/training seeds for the reported groups.
 
-The state and action dimensions are `3N + M + 8` and `2N + NM`, respectively.
-For `N=70` and `M=6`, the action dimension is 560. The action contains
+The state and action dimensions are `4N + M + 8 + NM` and `2N + NM`, respectively.
+For `N=70` and `M=6`, the state dimension is 714 and the action dimension is 560. The action contains
 continuous offloading and transmit-power branches and an AP-association branch
 executed as one-hot AP choices.
 

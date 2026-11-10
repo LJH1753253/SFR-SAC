@@ -64,7 +64,7 @@ def main_results():
     data = rows("main_results.csv")
     algorithms = ["SFR-SAC", "Penalty SAC", "Safe TD3", "Lyapunov-inspired rule", "Vanilla SAC"]
     labels = {"SFR-SAC": "SFR-SAC", "Penalty SAC": "Penalty SAC", "Safe TD3": "Safe TD3",
-              "Lyapunov-inspired rule": "Lyapunov-DPP", "Vanilla SAC": "Vanilla SAC"}
+              "Lyapunov-inspired rule": "Lyapunov-inspired rule", "Vanilla SAC": "Vanilla SAC"}
     colors = {"SFR-SAC": "#1f77b4", "Penalty SAC": "#2ca02c", "Safe TD3": "#7f7f7f",
               "Lyapunov-inspired rule": "#9467bd", "Vanilla SAC": "#d62728"}
     metrics = [("Cost (\\%)", "Service-failure cost (\\%)"),
@@ -353,7 +353,7 @@ def sensitivity():
 def failure_components():
     data = rows("evidence5_summary.csv", SUMMARY)
     order = [("split_exact", "SFR-SAC"), ("penalty_beta5", "Penalty SAC"),
-             ("td3", "Safe TD3"), ("dpp_rule", "Lyapunov-DPP"), ("vanilla", "Vanilla SAC")]
+             ("td3", "Safe TD3"), ("dpp_rule", "Lyapunov-inspired rule"), ("vanilla", "Vanilla SAC")]
     selected = [next(r for r in data if r["experiment"] == "main" and r["variant"] == variant and r["N"] == "70")
                 for variant, _ in order]
     xlabels = [label for _, label in order]
