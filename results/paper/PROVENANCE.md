@@ -9,6 +9,32 @@
 | Per-slot optimization | `results/revision_20261108/container_20261109/` | 5 pairs; 20 tests | Same source and revision identity as Fair Critics |
 | Other revision controls | `results/revision_20261108/tables/` | As recorded in each table | Revision provenance in `data/provenance.json` |
 
+## Supplementary Per-Seed Statistics
+
+The tables [near_zero_offloading_N70.csv](per_seed/near_zero_offloading_N70.csv)
+and [main_N65_SFR_per_seed.csv](per_seed/main_N65_SFR_per_seed.csv) provide
+additional statistics for the original frozen `split_exact` main experiment,
+not new training runs. Each uses five paired training and layout seeds, with
+100 evaluation episodes of 200 slots per deployment. The original source
+digest is `e942cebacf7dd4896d0a5b5647a47fb9c8246d7982c2fe21d72ba58b2f01d7d3`.
+Each row records the training task ID, held-out test ID, test random seed,
+checkpoint configuration fingerprint, and SHA-256 of the archived `model.pt`;
+the task ID and checkpoint configuration fingerprint are distinct identifiers.
+
+The N=70 table records a previously completed post-hoc deterministic inference
+diagnostic using the five frozen main-study checkpoints and their original
+held-out random streams. The count is over all device-slot decisions with
+decoded attempted-offloading ratio `x < 0.01`, not the successfully delivered
+fraction. The recorded requested and executed attempted ratios were identical
+for all decisions. Across the five models the mean and sample SD are
+0.169143% and 0.134897%, respectively; the pooled count is 11,840 of 7,000,000.
+The diagnostic was not rerun for this export.
+
+The N=65 table transcribes the original main-study per-seed test summaries.
+Its failure and energy values reproduce the N=65 `split_exact` aggregate in
+`summary/evidence5_summary.csv`; across deployments they are 9.209346% +/-
+0.427495% and 9.042879 +/- 2.440721 mJ/device/slot (mean +/- sample SD).
+
 ## Excluded From Canonical Aggregation
 
 `results/revision_20261108/tables/per_slot.csv` is an earlier local Per-slot archive. It is retained for traceability, but excluded from `results/paper/` because its source, checkpoint, and hardware provenance differs from the container rerun.
